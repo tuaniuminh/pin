@@ -6,6 +6,7 @@ import UIKit
 /// support a new one is to read the inventory here and extend `SensorCatalog`.
 struct DebugView: View {
     @EnvironmentObject private var monitor: PowerMonitor
+    @ObservedObject private var perf = PerformanceProbe.shared
     @State private var inventory: [HIDSensors.ServiceInfo] = []
     @State private var accessory: AccessoryProbe.Report?
     @State private var copied = false
@@ -24,6 +25,7 @@ struct DebugView: View {
             Backdrop(glow: .mwMuted, glowIntensity: 0.5)
             ScrollView {
                 VStack(spacing: 14) {
+                    performancePanel
                     diagnosticsPanel
                     sensorsPanel
                     temperatureWarningsPanel
@@ -63,6 +65,45 @@ struct DebugView: View {
                     Image(systemName: copied ? "checkmark" : "doc.on.doc")
                 }
                 .tint(.mwAccent)
+            }
+        }
+    }
+
+    private var performancePanel: some View {
+        Panel("Performance & Scrolling Diagnostics", systemImage: "speedometer") {
+            VStack(alignment: .leading, spacing: 10) {
+                let summary = perf.hitchSummary
+                HStack(alignment: .top, spacing: 10) {
+                    Metric(caption: "Average FPS",
+                           value: String(format: "%.1f", summary.averageFps),
+                           unit: "FPS",
+                           tint: summary.averageFps >= 55 ? .mwBattery : .mwDanger,
+                           size: 20)
+                    Metric(caption: "Frame Hitches",
+                           value: "\(summary.totalHitches)",
+                           unit: "drops",
+                           tint: summary.totalHitches == 0 ? .mwBattery : .mwLoss,
+                           size: 20)
+                }
+                HStack(alignment: .top, spacing: 10) {
+                    Metric(caption: "Worst hitch",
+                           value: String(format: "%.1f", summary.worstHitchMs),
+                           unit: "ms",
+                           tint: summary.worstHitchMs < 30 ? .mwBattery : .mwDanger,
+                           size: 20)
+                    Metric(caption: "Hitches at tick",
+                           value: "\(summary.hitchesDuringTick)",
+                           unit: summary.totalHitches > 0 ? "\(Int(Double(summary.hitchesDuringTick) / Double(max(summary.totalHitches, 1)) * 100))%" : "0%",
+                           tint: summary.hitchesDuringTick == 0 ? .mwBattery : .mwLoss,
+                           size: 20)
+                }
+                Divider().background(Color.mwCardStroke)
+                VStack(spacing: 0) {
+                    DetailRow(label: "Sensor read (IOKit/HID)", value: String(format: "%.2f ms", perf.lastSensorReadMs))
+                    DetailRow(label: "Calculations (Integrals/Fit)", value: String(format: "%.2f ms", perf.lastCalculationMs))
+                    DetailRow(label: "Main Thread State Mutation", value: String(format: "%.2f ms", perf.lastMainThreadMs))
+                    DetailRow(label: "Total Tick Duration", value: String(format: "%.2f ms (Peak: %.2f ms)", perf.lastSensorReadMs + perf.lastCalculationMs + perf.lastMainThreadMs, perf.peakTickMs))
+                }
             }
         }
     }
@@ -273,6 +314,8 @@ struct DebugView: View {
 
     private func fullDump() -> String {
         var lines: [String] = ["MiniWatts raw dump — \(Formatting.timestamp(.now))"]
+        lines.append("\n" + perf.formattedSummary())
+        lines.append("\n# Diagnostics")
         lines.append(contentsOf: monitor.diagnostics)
         lines.append("\n# Sensors")
         lines.append(contentsOf: monitor.snapshot.sensors.sorted { ($0.name, $0.index) < ($1.name, $1.index) }

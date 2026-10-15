@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import QuartzCore
 
 /// One point in the rolling live chart.
 nonisolated struct LiveSample: Identifiable, Hashable {
@@ -218,12 +219,20 @@ final class PowerMonitor: ObservableObject {
     // MARK: Refresh
 
     private func refresh() async {
+        PerformanceProbe.shared.recordTickStart()
         tick += 1
         thermal.update()
 
+        let tReadStart = CACurrentMediaTime()
         let result = await probeService.read(lastExternalConnected: lastExternalConnected,
                                              periodicRescan: tick % 15 == 0)
-        guard !Task.isCancelled else { return }
+        let tReadEnd = CACurrentMediaTime()
+        let sensorReadMs = (tReadEnd - tReadStart) * 1000.0
+
+        guard !Task.isCancelled else {
+            PerformanceProbe.shared.recordTickCancel()
+            return
+        }
         let current = stabilizedHoldSnapshot(result.snapshot)
         // Only Raw data reads this. It used to be assigned under `#if DEBUG`, when that
         // screen was Debug-only; now that the page ships, the guard made its "powerd
@@ -241,13 +250,19 @@ final class PowerMonitor: ObservableObject {
             devices = batteryCenter.read()
         }
 
+        let tCalcStart = CACurrentMediaTime()
         appendLive(current)
         updateRateEstimate(current)
         resistance.add(current)
         pathResistance = resistance.estimate
         updateSession(current)
+        let tCalcEnd = CACurrentMediaTime()
+        let calculationMs = (tCalcEnd - tCalcStart) * 1000.0
+
         lastExternalConnected = current.externalConnected
         onTick?(current)
+
+        PerformanceProbe.shared.recordTickEnd(sensorReadMs: sensorReadMs, calculationMs: calculationMs)
     }
 
     /// One fresh reading for the Shortcuts action, with none of the tick's side effects.

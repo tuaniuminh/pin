@@ -4431,6 +4431,159 @@
           }
         }
       }
+    },
+    "Performance & Scrolling Diagnostics": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chẩn đoán hiệu năng & độ trễ cuộn"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "性能与滚动延迟诊断"
+          }
+        }
+      }
+    },
+    "Average FPS": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "FPS trung bình"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "平均 FPS"
+          }
+        }
+      }
+    },
+    "Frame Hitches": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khung hình bị khựng"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "掉帧次数"
+          }
+        }
+      }
+    },
+    "Worst hitch": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Độ khựng lớn nhất"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最大卡顿延迟"
+          }
+        }
+      }
+    },
+    "Hitches at tick": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khựng trùng nhịp đọc"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "发生在采样时的卡顿"
+          }
+        }
+      }
+    },
+    "Sensor read (IOKit/HID)": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thời gian đọc cảm biến (IOKit/HID)"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "传感器读取耗时 (IOKit/HID)"
+          }
+        }
+      }
+    },
+    "Calculations (Integrals/Fit)": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thời gian tính toán (Tích phân/Trở kháng)"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "算法计算耗时 (积分/阻抗拟合)"
+          }
+        }
+      }
+    },
+    "Main Thread State Mutation": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thời gian cập nhật State luồng chính"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "主线程状态分发耗时"
+          }
+        }
+      }
+    },
+    "Total Tick Duration": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tổng thời gian mỗi chu kỳ"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每次采样总耗时"
+          }
+        }
+      }
     }
   },
   "version": "1.0"
