@@ -86,18 +86,6 @@ struct BatteryWidgetView: View {
                 }
             }
     }
-}
-
-private extension View {
-    @ViewBuilder
-    func widgetBackground<Content: View>(@ViewBuilder content: () -> Content) -> some View {
-        if #available(iOS 17.0, *) {
-            self.containerBackground(for: .widget, content: content)
-        } else {
-            self.background(content())
-        }
-    }
-}
 
     @ViewBuilder
     private func content(_ palette: WidgetPalette) -> some View {
@@ -107,6 +95,17 @@ private extension View {
         case .accessoryRectangular: RectangularBatteryView(entry: entry)
         case .accessoryInline: InlineBatteryView(entry: entry)
         default: SmallBatteryView(entry: entry, palette: palette)
+        }
+    }
+}
+
+private extension View {
+    @ViewBuilder
+    func widgetBackground<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+        if #available(iOS 17.0, *) {
+            self.containerBackground(for: .widget, content: content)
+        } else {
+            self.background(content())
         }
     }
 }
