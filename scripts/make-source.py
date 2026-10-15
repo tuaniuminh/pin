@@ -125,7 +125,7 @@ def main():
                 "localizedDescription": f"Release notes: {release}",
                 "downloadURL": f"https://github.com/{REPO}/releases/download/{tag}/{os.path.basename(ipa)}",
                 "size": os.path.getsize(ipa),
-                "minOSVersion": info.get("MinimumOSVersion", "17.0"),
+                "minOSVersion": info.get("MinimumOSVersion", "16.1"),
             }],
             "appPermissions": {
                 "entitlements": [],
