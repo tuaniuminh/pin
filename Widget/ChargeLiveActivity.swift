@@ -40,7 +40,7 @@ struct ChargeLiveActivity: Widget {
                     PrimaryMetricView(state: state,
                                       palette: palette,
                                       size: 28,
-                                      isStale: context.isStale,
+                                      isStale: context.isActivityStale,
                                       inlineCaption: false)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
@@ -57,13 +57,13 @@ struct ChargeLiveActivity: Widget {
                 }
             } compactLeading: {
                 Image(systemName: symbol(for: state.selectedMetric))
-                    .foregroundStyle(context.isStale ? palette.muted : tint)
+                    .foregroundStyle(context.isActivityStale ? palette.muted : tint)
             } compactTrailing: {
                 CompactMetricValue(state: state)
-                    .foregroundStyle(context.isStale ? palette.muted : tint)
+                    .foregroundStyle(context.isActivityStale ? palette.muted : tint)
             } minimal: {
                 Image(systemName: symbol(for: state.selectedMetric))
-                    .foregroundStyle(context.isStale ? palette.muted : tint)
+                    .foregroundStyle(context.isActivityStale ? palette.muted : tint)
             }
             .keylineTint(tint)
         }
@@ -85,14 +85,14 @@ struct ChargeActivityLockScreenView: View {
                 PrimaryMetricView(state: state,
                                   palette: palette,
                                   size: 34,
-                                  isStale: context.isStale)
+                                  isStale: context.isActivityStale)
                 Spacer(minLength: 8)
                 Text(verbatim: reading.percentText)
                     .font(.system(size: 22, weight: .semibold, design: .rounded))
                     .monospacedDigit()
             }
             SecondaryMetrics(state: state, palette: palette)
-                .opacity(context.isStale ? 0.55 : 1)
+                .opacity(context.isActivityStale ? 0.55 : 1)
             LevelBar(percent: reading.percent,
                      tint: palette.tint(for: reading),
                      track: palette.track,
@@ -217,7 +217,7 @@ struct ActivityFootnote: View {
 
     var body: some View {
         HStack(spacing: 6) {
-            if context.isStale {
+            if context.isActivityStale {
                 Label("Paused — open MiniWatts to resume", systemImage: "pause.circle")
                     .foregroundStyle(palette.loss)
             } else if showsStatus {
@@ -226,7 +226,7 @@ struct ActivityFootnote: View {
             Spacer(minLength: 6)
             // Dropped while paused: the line is too narrow for both, and the pause
             // message was the one being cut short.
-            if !context.isStale {
+            if !context.isActivityStale {
                 Text("Since \(Text(context.attributes.startedAt, style: .time))")
             }
             // The one way to close the activity while MiniWatts is suspended or killed:
@@ -252,6 +252,16 @@ struct ActivityFootnote: View {
         .foregroundStyle(palette.muted)
         .lineLimit(1)
         .minimumScaleFactor(0.8)
+    }
+}
+
+private extension ActivityViewContext {
+    var isActivityStale: Bool {
+        if #available(iOS 16.2, *) {
+            return isStale
+        } else {
+            return false
+        }
     }
 }
 
@@ -344,6 +354,7 @@ private func formattedValue(
     return shortValue(for: metric, state: state)
 }
 
+#if false
 #Preview("Lock Screen", as: .content,
          using: ChargeActivityAttributes(startedAt: .now.addingTimeInterval(-1_800),
                                          startPercent: 41)) {
@@ -363,3 +374,4 @@ private func formattedValue(
         selectedMetric: .chargingPower
     )
 }
+#endif

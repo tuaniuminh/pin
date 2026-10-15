@@ -400,6 +400,7 @@ struct InlineBatteryView: View {
     }
 }
 
+#if false
 #Preview(as: .systemSmall) {
     BatteryWidget()
 } timeline: {
@@ -411,3 +412,4 @@ struct InlineBatteryView: View {
 } timeline: {
     BatteryEntry.preview
 }
+#endif
