@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct DashboardView: View {
-    @Environment(PowerMonitor.self) private var monitor
+    @EnvironmentObject private var monitor: PowerMonitor
     @State private var showingSettings = false
 
     private var snapshot: PowerSnapshot { monitor.snapshot }
@@ -309,7 +309,7 @@ struct LegendDot: View {
     }
 }
 
-nonisolated private struct LegendLine: Shape {
+private struct LegendLine: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
         path.move(to: CGPoint(x: rect.minX, y: rect.midY))
@@ -320,7 +320,7 @@ nonisolated private struct LegendLine: Shape {
 
 /// A wrapping row of pills. `LazyVGrid` cannot do variable-width items on iOS 17,
 /// so the layout is done by hand.
-nonisolated struct FlowRow: Layout {
+struct FlowRow: Layout {
     var spacing: CGFloat = 6
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {

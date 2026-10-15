@@ -5,7 +5,7 @@ import UIKit
 /// of the app possible: sensor names differ between iPhone models, so the way to
 /// support a new one is to read the inventory here and extend `SensorCatalog`.
 struct DebugView: View {
-    @Environment(PowerMonitor.self) private var monitor
+    @EnvironmentObject private var monitor: PowerMonitor
     @State private var inventory: [HIDSensors.ServiceInfo] = []
     @State private var accessory: AccessoryProbe.Report?
     @State private var copied = false
@@ -44,7 +44,7 @@ struct DebugView: View {
                 // `.frame(maxWidth: .infinity)` only expands, it does not clamp, so
                 // that width propagates up and the page starts scrolling sideways.
                 // The cap is part of the pin: see `PageScaffold`.
-                .containerRelativeFrame(.horizontal) { width, _ in min(width, 760) }
+                .horizontalContainerCap(760)
                 .frame(maxWidth: .infinity)
             }
         }
@@ -55,7 +55,7 @@ struct DebugView: View {
         .autocorrectionDisabled()
         .textInputAutocapitalization(.never)
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     UIPasteboard.general.string = fullDump()
                     copied = true

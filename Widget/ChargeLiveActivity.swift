@@ -100,7 +100,7 @@ struct ChargeActivityLockScreenView: View {
             ActivityFootnote(context: context, palette: palette)
         }
         .padding(16)
-        .activitySystemActionForegroundColor(palette.tint(for: state))
+        .applyActivitySystemActionForegroundColor(palette.tint(for: state))
     }
 }
 
@@ -230,19 +230,39 @@ struct ActivityFootnote: View {
                 Text("Since \(Text(context.attributes.startedAt, style: .time))")
             }
             // The one way to close the activity while MiniWatts is suspended or killed:
-            // iOS wakes the app to perform the intent.
-            Button(intent: EndChargeActivityIntent()) {
-                Label("End", systemImage: "xmark")
-                    .padding(.horizontal, 7)
-                    .padding(.vertical, 2)
-                    .background(Capsule().fill(palette.track))
+            // iOS wakes the app to perform the intent on iOS 17+, or opens app via Link on iOS 16.
+            if #available(iOS 17.0, *) {
+                Button(intent: EndChargeActivityIntent()) {
+                    Label("End", systemImage: "xmark")
+                        .padding(.horizontal, 7)
+                        .padding(.vertical, 2)
+                        .background(Capsule().fill(palette.track))
+                }
+                .buttonStyle(.plain)
+            } else {
+                Link(destination: URL(string: "miniwatts://end-live-activity")!) {
+                    Label("End", systemImage: "xmark")
+                        .padding(.horizontal, 7)
+                        .padding(.vertical, 2)
+                        .background(Capsule().fill(palette.track))
+                }
             }
-            .buttonStyle(.plain)
         }
         .font(.system(size: 12, weight: .medium))
         .foregroundStyle(palette.muted)
         .lineLimit(1)
         .minimumScaleFactor(0.8)
+    }
+}
+
+private extension View {
+    @ViewBuilder
+    func applyActivitySystemActionForegroundColor(_ color: Color) -> some View {
+        if #available(iOS 17.0, *) {
+            self.activitySystemActionForegroundColor(color)
+        } else {
+            self
+        }
     }
 }
 

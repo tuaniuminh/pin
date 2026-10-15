@@ -1,6 +1,6 @@
 import Foundation
 
-nonisolated enum Formatting {
+enum Formatting {
     static func temperature(_ celsius: Double) -> String {
         String(format: "%.1f °C", celsius)
     }

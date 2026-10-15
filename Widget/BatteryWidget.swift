@@ -76,7 +76,7 @@ struct BatteryWidgetView: View {
     var body: some View {
         let palette = WidgetPalette(scheme)
         content(palette)
-            .containerBackground(for: .widget) {
+            .widgetBackground {
                 switch family {
                 case .systemSmall, .systemMedium:
                     LinearGradient(colors: [palette.canvasTop, palette.canvas],
@@ -86,6 +86,18 @@ struct BatteryWidgetView: View {
                 }
             }
     }
+}
+
+private extension View {
+    @ViewBuilder
+    func widgetBackground<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+        if #available(iOS 17.0, *) {
+            self.containerBackground(for: .widget, content: content)
+        } else {
+            self.background(content())
+        }
+    }
+}
 
     @ViewBuilder
     private func content(_ palette: WidgetPalette) -> some View {

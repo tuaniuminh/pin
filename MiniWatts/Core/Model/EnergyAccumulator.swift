@@ -6,7 +6,7 @@ import Foundation
 /// voltage and current at ~1 Hz on both sides of the charge IC. Integrating those
 /// gives the two numbers that actually matter — how much energy the adapter
 /// delivered, and how much of it reached the cell.
-nonisolated struct EnergyTotals: Codable, Hashable {
+struct EnergyTotals: Codable, Hashable {
     /// ∫ V·I dt at the adapter, in watt-hours.
     var inputWattHours: Double = 0
     /// ∫ V·I dt at the battery rail, in watt-hours.
@@ -122,7 +122,7 @@ nonisolated struct EnergyTotals: Codable, Hashable {
 /// any interval longer than `maximumInterval` is discarded — the totals then read
 /// as "energy measured while watching", which is honest, and `integratedSeconds`
 /// records how much of the wall clock that covered.
-nonisolated final class EnergyAccumulator {
+final class EnergyAccumulator {
     private struct Sample {
         let date: Date
         let inputWatts: Double?

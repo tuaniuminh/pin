@@ -1,26 +1,48 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @Environment(PowerMonitor.self) private var monitor
-    @Environment(FloatingMeterController.self) private var floatingMeter
+    @EnvironmentObject private var monitor: PowerMonitor
+    @EnvironmentObject private var floatingMeter: FloatingMeterController
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        @Bindable var monitor = monitor
-        @Bindable var floatingMeter = floatingMeter
         NavigationStack {
             ZStack {
                 Backdrop(glow: .mwAccent, glowIntensity: 0.6)
                 ScrollView {
                     VStack(spacing: 14) {
-                        recordingPanel(keepAwake: $monitor.keepScreenAwakeWhileCharging)
-                        glancesPanel(liveActivity: $monitor.showsLiveActivityWhileCharging,
-                                     metric: $monitor.liveActivityMetric)
-                        floatingPanel(showPower: $floatingMeter.showPower,
-                                      showTemperatures: $floatingMeter.showTemperatures,
-                                      layout: $floatingMeter.layout,
-                                      temperatureSelection: $floatingMeter.temperatureSelection)
-                        capacityPanel(capacity: $monitor.configuredBatteryWattHours)
+                        recordingPanel(keepAwake: Binding(
+                            get: { monitor.keepScreenAwakeWhileCharging },
+                            set: { monitor.keepScreenAwakeWhileCharging = $0 }
+                        ))
+                        glancesPanel(liveActivity: Binding(
+                            get: { monitor.showsLiveActivityWhileCharging },
+                            set: { monitor.showsLiveActivityWhileCharging = $0 }
+                        ),
+                        metric: Binding(
+                            get: { monitor.liveActivityMetric },
+                            set: { monitor.liveActivityMetric = $0 }
+                        ))
+                        floatingPanel(showPower: Binding(
+                            get: { floatingMeter.showPower },
+                            set: { floatingMeter.showPower = $0 }
+                        ),
+                        showTemperatures: Binding(
+                            get: { floatingMeter.showTemperatures },
+                            set: { floatingMeter.showTemperatures = $0 }
+                        ),
+                        layout: Binding(
+                            get: { floatingMeter.layout },
+                            set: { floatingMeter.layout = $0 }
+                        ),
+                        temperatureSelection: Binding(
+                            get: { floatingMeter.temperatureSelection },
+                            set: { floatingMeter.temperatureSelection = $0 }
+                        ))
+                        capacityPanel(capacity: Binding(
+                            get: { monitor.configuredBatteryWattHours },
+                            set: { monitor.configuredBatteryWattHours = $0 }
+                        ))
                         devicePanel
                         aboutPanel
                         rawDataLink
@@ -33,14 +55,14 @@ struct SettingsView: View {
                     // `.frame(maxWidth: .infinity)` only expands, it does not clamp, so
                     // that width propagates up and the page starts scrolling sideways.
                     // The cap is part of the pin: see `PageScaffold`.
-                    .containerRelativeFrame(.horizontal) { width, _ in min(width, 760) }
+                    .horizontalContainerCap(760)
                     .frame(maxWidth: .infinity)
                 }
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     Button("Done") { dismiss() }.tint(.mwAccent)
                 }
             }

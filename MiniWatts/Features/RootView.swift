@@ -2,8 +2,8 @@ import SwiftUI
 import UIKit
 
 struct RootView: View {
-    @Environment(PowerMonitor.self) private var monitor
-    @Environment(FloatingMeterController.self) private var floatingMeter
+    @EnvironmentObject private var monitor: PowerMonitor
+    @EnvironmentObject private var floatingMeter: FloatingMeterController
     @Environment(\.scenePhase) private var scenePhase
     @State private var liveActivity = ChargeActivityController()
     @State private var widgets = WidgetPublisher()
@@ -48,7 +48,7 @@ struct RootView: View {
                 widgets.publish(reading, lastSession: monitor.sessions.first)
             }
         }
-        .onChange(of: scenePhase, initial: true) { _, phase in
+        .onChangeCompat(of: scenePhase, initial: true) { phase in
             switch phase {
             case .active:
                 monitor.start()
@@ -111,12 +111,12 @@ private struct TabPage<Content: View>: View {
 /// second. Read in `RootView`'s body, it re-ran that body — and the tab view under
 /// it — on every tick; here it re-runs an empty view.
 private struct ScreenAwakeHolder: View {
-    @Environment(PowerMonitor.self) private var monitor
+    @EnvironmentObject private var monitor: PowerMonitor
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         Color.clear
-            .onChange(of: shouldStayAwake, initial: true) { _, awake in
+            .onChangeCompat(of: shouldStayAwake, initial: true) { awake in
                 UIApplication.shared.isIdleTimerDisabled = awake
             }
     }
@@ -178,7 +178,7 @@ struct PageScaffold<Content: View>: View {
                     // same frame: the pin is a fixed width, so a `frame(maxWidth:)`
                     // after it cannot narrow it — the content just overflows that frame
                     // by the same amount on both sides and looks exactly as wide as before.
-                    .containerRelativeFrame(.horizontal) { width, _ in min(width, 760) }
+                    .horizontalContainerCap(760)
                     .frame(maxWidth: .infinity)
                 }
             }
@@ -186,7 +186,7 @@ struct PageScaffold<Content: View>: View {
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 if let toolbar {
-                    ToolbarItem(placement: .topBarTrailing) { toolbar }
+                    ToolbarItem(placement: .navigationBarTrailing) { toolbar }
                 }
             }
         }
@@ -241,5 +241,41 @@ struct EmptyNote: View {
                 .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+// MARK: - iOS 16 Compatibility Extensions
+
+extension View {
+    @ViewBuilder
+    func onChangeCompat<V: Equatable>(of value: V, initial: Bool = false, perform action: @escaping (V) -> Void) -> some View {
+        if #available(iOS 17.0, *) {
+            self.onChange(of: value, initial: initial) { _, newValue in
+                action(newValue)
+            }
+        } else {
+            self
+                .onAppear {
+                    if initial { action(value) }
+                }
+                .onChange(of: value, perform: action)
+        }
+    }
+
+    @ViewBuilder
+    func horizontalContainerCap(_ maxCap: CGFloat? = 760) -> some View {
+        if #available(iOS 17.0, *) {
+            if let maxCap {
+                self.containerRelativeFrame(.horizontal) { width, _ in min(width, maxCap) }
+            } else {
+                self.containerRelativeFrame(.horizontal)
+            }
+        } else {
+            if let maxCap {
+                self.frame(maxWidth: maxCap)
+            } else {
+                self.frame(maxWidth: .infinity)
+            }
+        }
     }
 }

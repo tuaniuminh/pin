@@ -5,14 +5,14 @@ import Foundation
 /// A missing battery-current sensor is evidence we do not have, rather than
 /// evidence that charging is being held. Keeping that distinction prevents the
 /// UI from presenting an inferred hold as a fact.
-nonisolated enum ChargeHoldState: String, Codable, Hashable, Sendable {
+enum ChargeHoldState: String, Codable, Hashable, Sendable {
     case held
     case notHeld
     case unknown
 }
 
 /// One advertised USB-PD / HVC power profile from the adapter's menu.
-nonisolated struct PDProfile: Identifiable, Hashable {
+struct PDProfile: Identifiable, Hashable {
     let index: Int
     let voltageMillivolts: Int
     let currentMilliamps: Int
@@ -25,7 +25,7 @@ nonisolated struct PDProfile: Identifiable, Hashable {
 }
 
 /// Every temperature sensor that sits in one zone of the phone.
-nonisolated struct ZoneTemperatures: Identifiable, Hashable {
+struct ZoneTemperatures: Identifiable, Hashable {
     let zone: ThermalZone
     /// Every reading in the zone, hottest first, calibration constants last.
     let readings: [HIDSensors.Reading]
@@ -56,7 +56,7 @@ nonisolated struct ZoneTemperatures: Identifiable, Hashable {
 /// property-list dictionaries are bridged to Swift dictionaries and no caller
 /// mutates their values after construction.
 /// TODO: model raw diagnostics as typed Sendable values and remove @unchecked.
-nonisolated struct PowerSnapshot: @unchecked Sendable {
+struct PowerSnapshot: @unchecked Sendable {
     let date: Date
     let registry: [String: Any]
     let powerSource: [String: Any]?

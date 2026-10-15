@@ -50,7 +50,7 @@ final class WidgetPublisher {
     }
 }
 
-nonisolated extension WidgetSnapshot.Session {
+extension WidgetSnapshot.Session {
     init(_ session: ChargeSession) {
         self.init(start: session.start,
                   end: session.end ?? session.start.addingTimeInterval(session.duration),

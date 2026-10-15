@@ -1,7 +1,7 @@
 import Foundation
 
 /// One point on a session's charge curve.
-nonisolated struct ChargeSample: Codable, Hashable, Identifiable {
+struct ChargeSample: Codable, Hashable, Identifiable {
     /// Seconds since the session started.
     let offset: TimeInterval
     /// Nil means that rail was unavailable for that sample. Older session files
@@ -18,7 +18,7 @@ nonisolated struct ChargeSample: Codable, Hashable, Identifiable {
 }
 
 /// Everything recorded between plugging in and unplugging.
-nonisolated struct ChargeSession: Codable, Identifiable, Hashable {
+struct ChargeSession: Codable, Identifiable, Hashable {
     let id: UUID
     let start: Date
     var end: Date?
@@ -109,7 +109,7 @@ nonisolated struct ChargeSession: Codable, Identifiable, Hashable {
 /// `@unchecked Sendable` because the checker cannot see the confinement: every
 /// mutable member (`pending`) is touched only from inside `queue`, which is serial,
 /// and `url` is a `let`.
-nonisolated final class SessionStore: @unchecked Sendable {
+final class SessionStore: @unchecked Sendable {
     /// Sessions kept on disk; older ones are dropped oldest-first.
     private static let sessionLimit = 60
     /// Points kept per session. Longer sessions are halved in place as they grow.

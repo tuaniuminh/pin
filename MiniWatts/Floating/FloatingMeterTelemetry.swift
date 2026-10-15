@@ -2,14 +2,14 @@ import Foundation
 import SwiftUI
 import UIKit
 
-nonisolated enum FloatingMeterLayout: String, CaseIterable, Identifiable {
+enum FloatingMeterLayout: String, CaseIterable, Identifiable {
     case together
     case separatePages
 
     var id: Self { self }
 }
 
-nonisolated enum FloatingTemperatureSelection: String, CaseIterable, Identifiable {
+enum FloatingTemperatureSelection: String, CaseIterable, Identifiable {
     case all
     case soc
     case battery
@@ -19,7 +19,7 @@ nonisolated enum FloatingTemperatureSelection: String, CaseIterable, Identifiabl
     var id: Self { self }
 }
 
-nonisolated enum FloatingSystemThermalState: Int, Hashable {
+enum FloatingSystemThermalState: Int, Hashable {
     case nominal
     case fair
     case serious
@@ -36,7 +36,7 @@ nonisolated enum FloatingSystemThermalState: Int, Hashable {
     }
 }
 
-nonisolated struct FloatingMeterData: Hashable {
+struct FloatingMeterData: Hashable {
     let date: Date
     let externalConnected: Bool
     let isWireless: Bool

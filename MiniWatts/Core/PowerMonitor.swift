@@ -1,8 +1,8 @@
+import Combine
 import Foundation
-import Observation
 
 /// One point in the rolling live chart.
-nonisolated struct LiveSample: Identifiable, Hashable {
+struct LiveSample: Identifiable, Hashable {
     let date: Date
     let inputWatts: Double?
     let batteryWatts: Double?
@@ -12,53 +12,55 @@ nonisolated struct LiveSample: Identifiable, Hashable {
 
 /// Drives every probe on a one-second tick and merges the results into one
 /// observable object the whole UI reads from.
-@Observable
-final class PowerMonitor {
+@MainActor
+final class PowerMonitor: ObservableObject {
+    static private(set) var shared: PowerMonitor?
+
     // MARK: Published state
 
-    private(set) var snapshot = PowerSnapshot()
-    private(set) var live: [LiveSample] = []
-    private(set) var devices: [ExternalBatteryDevice] = []
-    private(set) var sessions: [ChargeSession] = []
-    private(set) var currentSession: ChargeSession?
-    private(set) var sessionTotals = EnergyTotals()
+    @Published private(set) var snapshot = PowerSnapshot()
+    @Published private(set) var live: [LiveSample] = []
+    @Published private(set) var devices: [ExternalBatteryDevice] = []
+    @Published private(set) var sessions: [ChargeSession] = []
+    @Published private(set) var currentSession: ChargeSession?
+    @Published private(set) var sessionTotals = EnergyTotals()
     /// Watts estimated from how fast the percentage moves. The only way to see
     /// discharge power: no discharge-current sensor is exposed to a sandboxed app.
-    private(set) var rateEstimateWatts: Double?
+    @Published private(set) var rateEstimateWatts: Double?
     /// Resistance of the whole charging path — charger, cable, both plugs — inferred
     /// from how the port voltage sags as the current rises. Nil until the current
     /// has moved far enough for the fit to mean anything. See `PathResistanceMeter`.
-    private(set) var pathResistance: PathResistanceEstimate?
-    private(set) var diagnostics: [String] = []
+    @Published private(set) var pathResistance: PathResistanceEstimate?
+    @Published private(set) var diagnostics: [String] = []
     /// Every power source powerd reports, not just the internal battery.
     ///
     /// BatteryCenter is built on this same list — it has a `_BCPowerSourceController`
     /// and registers for power-source change notifications — so if accessories are
     /// reachable at all from a sandboxed app, they show up here.
-    private(set) var powerSources: [[String: Any]] = []
+    @Published private(set) var powerSources: [[String: Any]] = []
     /// False until the session file has been read. Nothing is written before then:
     /// the load is asynchronous now, and a save that landed first would overwrite
     /// the whole history with an empty array.
-    private(set) var isLoaded = false
+    @Published private(set) var isLoaded = false
 
     /// Whether to hold the screen awake while the phone is plugged in.
     ///
     /// The screen locking is what used to end a charge session two minutes in — the
     /// tick stops with the app, and a full charge could never be recorded. Applied
     /// by `RootView`, which is where UIKit belongs; `Core` stays UI-free.
-    var keepScreenAwakeWhileCharging: Bool {
+    @Published var keepScreenAwakeWhileCharging: Bool {
         didSet { UserDefaults.standard.set(keepScreenAwakeWhileCharging, forKey: Self.keepAwakeKey) }
     }
 
     /// Whether to show the charging live activity on the Lock Screen, in the Dynamic
     /// Island and in StandBy. Applied by `RootView`, like the setting above.
-    var showsLiveActivityWhileCharging: Bool {
+    @Published var showsLiveActivityWhileCharging: Bool {
         didSet { UserDefaults.standard.set(showsLiveActivityWhileCharging, forKey: Self.liveActivityKey) }
     }
 
     /// The reading used by the compact Dynamic Island presentation. This changes
     /// presentation only; the activity remains charger-bound.
-    var liveActivityMetric: LiveActivityMetric {
+    @Published var liveActivityMetric: LiveActivityMetric {
         didSet {
             UserDefaults.standard.set(liveActivityMetric.rawValue,
                                       forKey: Self.liveActivityMetricKey)
@@ -86,7 +88,7 @@ final class PowerMonitor {
         }
     }
 
-    var configuredBatteryWattHours: Double {
+    @Published var configuredBatteryWattHours: Double {
         didSet { UserDefaults.standard.set(configuredBatteryWattHours, forKey: Self.wattHoursKey) }
     }
 
@@ -154,6 +156,7 @@ final class PowerMonitor {
             .flatMap(LiveActivityMetric.init(rawValue:)) ?? .chargingPower
         sensorServiceCount = probeService.initialServiceCount
         collectDiagnostics()
+        Self.shared = self
         Task { await loadStoredSessions() }
     }
 

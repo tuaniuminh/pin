@@ -15,8 +15,7 @@ by several entries.
 
 - Plain Xcode project, no XcodeGen, no packages. `PBXFileSystemSynchronizedRootGroup`:
   new files under `MiniWatts/` join the target automatically, do not edit the pbxproj.
-- iOS 17 deployment target, **Swift 6** language mode, Xcode 26+ required
-  (`nonisolated` on type and extension declarations is Swift 6.2).
+- iOS 16.1 deployment target, **Swift 6** language mode, Xcode 15+ compatible.
 - `./scripts/build-ipa.sh` — unsigned ipa, the distributable one; runs
   `verify-clean.sh` on itself and fails if the artifact carries identifying data.
 - `TEAM_ID=… ./scripts/build-ipa.sh signed` — for your own device. No default team
@@ -46,8 +45,8 @@ by several entries.
   computed: those are single hash hits. Also here:
   `EnergyAccumulator` integrates ∫V·I dt; `ChargeSession` + `SessionStore` persist charges
   as one JSON file in Application Support.
-- `Core/PowerMonitor.swift` — `@Observable`, 1 s tick, drives everything and owns session
-  lifecycle. Injected once in `MiniWattsApp`, read via `@Environment(PowerMonitor.self)`.
+- `Core/PowerMonitor.swift` — `ObservableObject`, 1 s tick, drives everything and owns session
+  lifecycle. Injected once in `MiniWattsApp`, read via `@EnvironmentObject`.
   `headline` lives here rather than on the snapshot: its last fallback is the %-rate
   estimate, which is derived across several snapshots and so is not a snapshot's to give.
 - `Design/` — palette (`Color.mw(light:dark:)`, no asset catalog entries), `Panel`/

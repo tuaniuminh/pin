@@ -20,7 +20,7 @@ import Foundation
 ///   gas gauge battery      battery temperature
 ///   Charger TQ0j / TQ0d    charger junction / die temperature
 ///   PMU tdie1…n            SoC die temperatures
-nonisolated final class HIDSensors {
+final class HIDSensors {
     enum Kind: Int, Sendable {
         case current = 2
         case voltage = 3

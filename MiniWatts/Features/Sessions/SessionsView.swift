@@ -29,7 +29,7 @@ extension ChargeSession {
 }
 
 struct SessionsView: View {
-    @Environment(PowerMonitor.self) private var monitor
+    @EnvironmentObject private var monitor: PowerMonitor
     @State private var confirmingDelete = false
 
     var body: some View {
@@ -165,7 +165,7 @@ struct SessionRow: View {
 
 struct SessionDetailView: View {
     let session: ChargeSession
-    @Environment(PowerMonitor.self) private var monitor
+    @EnvironmentObject private var monitor: PowerMonitor
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -186,13 +186,13 @@ struct SessionDetailView: View {
                 // ideal width — the text unwrapped onto one line — and
                 // `.frame(maxWidth: .infinity)` only expands, it does not clamp, so
                 // that width propagates up and the page starts scrolling sideways.
-                .containerRelativeFrame(.horizontal)
+                .horizontalContainerCap(nil)
             }
         }
         .navigationTitle(session.titleText)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItem(placement: .navigationBarTrailing) {
                 Button(role: .destructive) {
                     monitor.deleteSession(session)
                     dismiss()

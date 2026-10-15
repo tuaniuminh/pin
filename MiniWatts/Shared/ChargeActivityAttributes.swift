@@ -2,7 +2,7 @@ import ActivityKit
 import AppIntents
 import Foundation
 
-nonisolated enum LiveActivityMetric: String, Codable, Hashable, CaseIterable, Identifiable {
+enum LiveActivityMetric: String, Codable, Hashable, CaseIterable, Identifiable {
     case chargingPower
     case socTemperature
     case batteryTemperature
@@ -14,7 +14,7 @@ nonisolated enum LiveActivityMetric: String, Codable, Hashable, CaseIterable, Id
 /// The existing charge reading plus the extra temperatures needed by the expanded
 /// activity. Keeping the `ChargeReading` intact preserves the widget wording and
 /// charger-bound lifecycle while allowing the compact presentation to be selected.
-nonisolated struct ChargeActivityContentState: Codable, Hashable {
+struct ChargeActivityContentState: Codable, Hashable {
     var reading: ChargeReading
     var socTemperature: Double?
     var hottestTemperature: Double?
@@ -37,7 +37,7 @@ nonisolated struct ChargeActivityContentState: Codable, Hashable {
 /// would never receive them. So every update carries a stale date, and the
 /// extension says the reading is out of date rather than showing an old number as
 /// if it were current.
-nonisolated struct ChargeActivityAttributes: ActivityAttributes {
+struct ChargeActivityAttributes: ActivityAttributes {
     typealias ContentState = ChargeActivityContentState
 
     /// When the charger was connected.
@@ -53,7 +53,8 @@ nonisolated struct ChargeActivityAttributes: ActivityAttributes {
 /// the app's process, which iOS wakes for it, so the button closes the activity
 /// without opening MiniWatts. Compiled into both targets: the extension needs the type
 /// to draw the button, the app performs it.
-nonisolated struct EndChargeActivityIntent: LiveActivityIntent {
+@available(iOS 17.0, *)
+struct EndChargeActivityIntent: LiveActivityIntent {
     static let title: LocalizedStringResource = "End Live Activity"
     static var isDiscoverable: Bool { false }
 

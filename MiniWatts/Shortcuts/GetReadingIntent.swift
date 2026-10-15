@@ -41,10 +41,8 @@ struct GetReadingIntent: AppIntent {
         }
     }
 
-    @Dependency private var monitor: PowerMonitor
-
     nonisolated func perform() async throws -> some IntentResult & ReturnsValue<Double?> {
-        let monitor = monitor
+        let monitor = await MainActor.run { PowerMonitor.shared ?? PowerMonitor() }
         let metric = metric
         let unit = unit
         // The one shared probe reads off the main actor; only its immutable
@@ -59,7 +57,7 @@ struct GetReadingIntent: AppIntent {
 /// same names and taken from the same snapshot fields — so "SoC temperature" in a
 /// shortcut is the number the Dynamic Island shows — plus the charge level, which an
 /// automation wants and the live activity has no need to be told.
-nonisolated enum ReadingMetric: String, AppEnum {
+enum ReadingMetric: String, AppEnum {
     case batteryTemperature
     case socTemperature
     case hottestTemperature
@@ -127,7 +125,7 @@ nonisolated enum ReadingMetric: String, AppEnum {
     }
 }
 
-nonisolated enum TemperatureUnit: String, AppEnum {
+enum TemperatureUnit: String, AppEnum {
     case celsius
     case fahrenheit
 

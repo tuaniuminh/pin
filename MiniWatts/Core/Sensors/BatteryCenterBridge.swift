@@ -7,7 +7,7 @@ import ObjectiveC
 /// Shapes here follow the real `BCBatteryDevice` interface rather than guesswork.
 /// See `Batsie` (github.com/leptos-null/Batsie), which carries a cleaned-up header
 /// and — importantly — is an ordinary sandboxed app, not a tweak.
-nonisolated struct ExternalBatteryDevice: Identifiable, Hashable {
+struct ExternalBatteryDevice: Identifiable, Hashable {
     /// `BCBatteryDeviceAccessoryCategory`, iOS 11.4+.
     enum Category: Int {
         case unknown, speaker, headphone, watch, batteryCase, keyboard, trackpad, pencil
@@ -89,7 +89,7 @@ nonisolated struct ExternalBatteryDevice: Identifiable, Hashable {
 /// but it is private API and can change or vanish in any iOS release —
 /// every call here is defensive, and every failure is reported with the step that
 /// failed rather than as a bare empty list.
-nonisolated final class BatteryCenterBridge {
+final class BatteryCenterBridge {
     /// Where the bridge got to. The UI shows this verbatim, because "no devices"
     /// and "the framework would not load" look identical otherwise, and only the
     /// first of those is worth reporting as a bug.
@@ -339,11 +339,11 @@ nonisolated final class BatteryCenterBridge {
 
 /// Stands in for `BCBatteryDeviceObserving`. Only the selector matters at runtime,
 /// so the protocol itself does not need to be declared.
-nonisolated private final class DeviceObserver: NSObject {
+private final class DeviceObserver: NSObject {
     @objc func connectedDevicesDidChange(_ devices: Any?) {}
 }
 
-nonisolated private extension NSObject {
+private extension NSObject {
     /// `value(forKey:)` raises for an unknown key, and Swift cannot catch that, so
     /// nothing is read without checking for an accessor first.
     ///

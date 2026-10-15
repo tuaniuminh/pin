@@ -7,7 +7,7 @@ import SwiftUI
 /// at zero. A single line through what is left would run straight across each
 /// hole as though it had been measured, so every run is a series of its own: the
 /// line stops at a missing reading and starts again at the next one.
-private nonisolated struct RunPoint<X: Plottable & Hashable>: Identifiable {
+private struct RunPoint<X: Plottable & Hashable>: Identifiable {
     let x: X
     let watts: Double
     let run: Int

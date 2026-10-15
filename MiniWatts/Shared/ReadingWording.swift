@@ -5,7 +5,7 @@ import Foundation
 /// Compiled into both targets: the Power tab, the widget, the live activity and the
 /// floating meter all describe the same reading, and they have already drifted once.
 /// Copy only — no views. The catalogs of both targets carry these strings.
-nonisolated extension ChargeReading.Source {
+extension ChargeReading.Source {
     var caption: LocalizedStringResource {
         switch self {
         case .charger: return "at phone port"
@@ -16,7 +16,7 @@ nonisolated extension ChargeReading.Source {
     }
 }
 
-nonisolated extension ChargeReading {
+extension ChargeReading {
     /// An unknown hold is not a title of its own. What is known in that case —
     /// plugged in, not charging — is what the app's own status line says, and a
     /// widget saying “unknown” beside it would be the two disagreeing about one
