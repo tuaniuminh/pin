@@ -1,6 +1,7 @@
 import Combine
 import Foundation
 import QuartzCore
+import UIKit
 
 /// One point in the rolling live chart.
 nonisolated struct LiveSample: Identifiable, Hashable {
@@ -234,33 +235,41 @@ final class PowerMonitor: ObservableObject {
             return
         }
         let current = stabilizedHoldSnapshot(result.snapshot)
-        // Only Raw data reads this. It used to be assigned under `#if DEBUG`, when that
-        // screen was Debug-only; now that the page ships, the guard made its "powerd
-        // power sources" panel report none in every release build — a false statement
-        // on the one page whose job is to show what the probes actually returned. The
-        // write costs nothing while that page is closed: `@Observable` invalidates only
-        // views that read the property, and no other view does.
-        powerSources = result.sources
-        snapshot = current
-        if sensorServiceCount != result.serviceCount {
-            sensorServiceCount = result.serviceCount
-            collectDiagnostics()
-        }
-        if tick % 5 == 1 {
-            devices = batteryCenter.read()
-        }
-
         let tCalcStart = CACurrentMediaTime()
-        appendLive(current)
-        updateRateEstimate(current)
         resistance.add(current)
-        pathResistance = resistance.estimate
         updateSession(current)
-        let tCalcEnd = CACurrentMediaTime()
-        let calculationMs = (tCalcEnd - tCalcStart) * 1000.0
-
         lastExternalConnected = current.externalConnected
         onTick?(current)
+
+        let isUserScrolling = RunLoop.main.currentMode == .tracking
+        let commitUI: @MainActor () -> Void = { [weak self] in
+            guard let self else { return }
+            self.powerSources = result.sources
+            self.snapshot = current
+            if self.sensorServiceCount != result.serviceCount {
+                self.sensorServiceCount = result.serviceCount
+                self.collectDiagnostics()
+            }
+            if self.tick % 5 == 1 {
+                self.devices = self.batteryCenter.read()
+            }
+            self.appendLive(current)
+            self.updateRateEstimate(current)
+            self.pathResistance = self.resistance.estimate
+        }
+
+        if isUserScrolling {
+            RunLoop.main.perform(inModes: [.default]) {
+                MainActor.assumeIsolated {
+                    commitUI()
+                }
+            }
+        } else {
+            commitUI()
+        }
+
+        let tCalcEnd = CACurrentMediaTime()
+        let calculationMs = (tCalcEnd - tCalcStart) * 1000.0
 
         PerformanceProbe.shared.recordTickEnd(sensorReadMs: sensorReadMs, calculationMs: calculationMs)
     }

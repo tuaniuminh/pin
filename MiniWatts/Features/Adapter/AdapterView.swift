@@ -428,7 +428,6 @@ struct DetailRow: View {
                         Text(verbatim: value)
                             .mwMono(size: 11)
                             .fixedSize(horizontal: false, vertical: true)
-                            .textSelection(.enabled)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 } else {
@@ -439,7 +438,6 @@ struct DetailRow: View {
                         Spacer(minLength: 12)
                         Text(verbatim: value)
                             .mwMono(size: 12)
-                            .textSelection(.enabled)
                     }
                 }
             }
