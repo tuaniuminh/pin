@@ -30,8 +30,17 @@ echo "Checking $(basename "$IPA")"
 
 # Searched for at any depth, not just at the top of the app: an app extension is a
 # bundle of its own, and carries its own signature and profile.
-[ -n "$(find "$APP" -name _CodeSignature -print -quit)" ] && r=1 || r=0
-check "no code signature" $r
+# Any signature present must be ad-hoc (no personal certificate or developer authority).
+if [ -n "$(find "$APP" -name _CodeSignature -print -quit)" ]; then
+  if codesign -dvvv "$APP" 2>&1 | grep -q "Authority="; then
+    r=1
+  else
+    r=0
+  fi
+  check "ad-hoc code signature only (no certificate identity)" $r
+else
+  check "no code signature" 0
+fi
 [ -n "$(find "$APP" -name embedded.mobileprovision -print -quit)" ] && r=1 || r=0
 check "no provisioning profile" $r
 

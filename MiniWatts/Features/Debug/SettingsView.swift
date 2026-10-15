@@ -272,7 +272,14 @@ struct SettingsView: View {
                               ? String(localized: "available") : String(localized: "unavailable"))
                 DetailRow(label: "Cycle count", value: monitor.snapshot.cycleCount.map(String.init))
                 DetailRow(label: "Battery health",
-                          value: monitor.snapshot.healthPercent.map { String(format: "%.0f%%", $0) })
+                          value: monitor.snapshot.healthPercent.map { String(format: "%.1f%%", $0) })
+                DetailRow(label: "Actual capacity",
+                          value: monitor.snapshot.maxCapacity.map { "\($0) mAh" })
+                DetailRow(label: "Design capacity",
+                          value: monitor.snapshot.designCapacity.map { "\($0) mAh" })
+                DetailRow(label: "Current charge",
+                          value: monitor.snapshot.rawCurrentCapacity.map { "\($0) mAh" })
+                DetailRow(label: "Serial", value: monitor.snapshot.batterySerialNumber)
             }
         }
     }

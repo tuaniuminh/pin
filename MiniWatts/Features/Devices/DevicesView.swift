@@ -59,6 +59,32 @@ struct DevicesView: View {
                               isCharging: snapshot.isCharging,
                               tint: percent <= 20 ? .mwDanger : .mwBattery)
                 }
+
+                if snapshot.cycleCount != nil || snapshot.maxCapacity != nil || snapshot.healthPercent != nil {
+                    Divider()
+                        .background(Color.mwCardStroke)
+
+                    VStack(spacing: 0) {
+                        if let cycleCount = snapshot.cycleCount {
+                            DetailRow(label: "Cycle count", value: "\(cycleCount)")
+                        }
+                        if let health = snapshot.healthPercent {
+                            DetailRow(label: "Battery health", value: String(format: "%.1f%%", health))
+                        }
+                        if let maxCap = snapshot.maxCapacity {
+                            if let designCap = snapshot.designCapacity {
+                                DetailRow(label: "Actual capacity", value: "\(maxCap) mAh / \(designCap) mAh")
+                            } else {
+                                DetailRow(label: "Actual capacity", value: "\(maxCap) mAh")
+                            }
+                        } else if let designCap = snapshot.designCapacity {
+                            DetailRow(label: "Design capacity", value: "\(designCap) mAh")
+                        }
+                        if let currentCap = snapshot.rawCurrentCapacity {
+                            DetailRow(label: "Current charge", value: "\(currentCap) mAh")
+                        }
+                    }
+                }
             }
         }
     }

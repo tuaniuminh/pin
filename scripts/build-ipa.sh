@@ -115,7 +115,13 @@ if [ "$MODE" = "unsigned" ]; then
     rm -rf "$appex/_CodeSignature"
     executable="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$appex/Info.plist")"
     xcrun strip -S -x "$appex/$executable"
+    codesign -s - --force --entitlements Widget/Widget.entitlements "$appex"
   done < <(find "$BUILD_DIR/Payload/$SCHEME.app" -name '*.appex' -type d -print0)
+
+  # Embed entitlements via ad-hoc signing for TrollStore
+  cp MiniWatts/MiniWatts.entitlements "$BUILD_DIR/Payload/$SCHEME.app/entitlements.plist"
+  codesign -s - --force --entitlements MiniWatts/MiniWatts.entitlements "$BUILD_DIR/Payload/$SCHEME.app"
+
   (cd "$BUILD_DIR" && zip -qry "export/$SCHEME-unsigned.ipa" Payload)
   rm -rf "$BUILD_DIR/Payload"
   IPA="$EXPORT_DIR/$SCHEME-unsigned.ipa"

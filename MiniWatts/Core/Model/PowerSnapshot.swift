@@ -344,9 +344,36 @@ nonisolated struct PowerSnapshot: @unchecked Sendable {
             .map { Double($0) / 100 }
             .flatMap { HIDSensors.plausibleCelsius.contains($0) ? $0 : nil }
     }
-    var cycleCount: Int? { int("CycleCount", in: registry) }
-    var designCapacity: Int? { int("DesignCapacity", in: registry) }
-    var maxCapacity: Int? { int("AppleRawMaxCapacity", in: registry) ?? int("NominalChargeCapacity", in: registry) }
+    private var batteryData: [String: Any]? {
+        registry["BatteryData"] as? [String: Any]
+    }
+
+    var cycleCount: Int? {
+        int("CycleCount", in: registry)
+            ?? batteryData.flatMap { Self.int("CycleCount", in: $0) }
+    }
+
+    var designCapacity: Int? {
+        int("DesignCapacity", in: registry)
+            ?? batteryData.flatMap { Self.int("DesignCapacity", in: $0) }
+    }
+
+    var maxCapacity: Int? {
+        int("AppleRawMaxCapacity", in: registry)
+            ?? int("NominalChargeCapacity", in: registry)
+            ?? batteryData.flatMap { Self.int("NominalChargeCapacity", in: $0) }
+            ?? batteryData.flatMap { Self.int("MaximumFCC", in: $0) }
+    }
+
+    var rawCurrentCapacity: Int? {
+        int("AppleRawCurrentCapacity", in: registry)
+            ?? batteryData.flatMap { Self.int("AppleRawCurrentCapacity", in: $0) }
+    }
+
+    var batterySerialNumber: String? {
+        (registry["Serial"] as? String)
+            ?? (registry["BatterySerialNumber"] as? String)
+    }
 
     var healthPercent: Double? {
         guard let maxCapacity, let designCapacity, designCapacity > 0 else { return nil }

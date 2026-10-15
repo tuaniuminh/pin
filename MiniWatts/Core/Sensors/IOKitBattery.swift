@@ -61,9 +61,28 @@ nonisolated final class IOKitBattery {
         copyChargeStatus = sym("IOPSCopyChargeStatus", CopyChargeStatusFn.self)
     }
 
-    /// Full property dictionary of the first `IOPMPowerSource` service.
-    /// Complete on macOS and the simulator, filtered to two keys on a real iPhone.
-    func readRegistryProperties(className: String = "IOPMPowerSource") -> [String: Any]? {
+    /// Full property dictionary of the power source services.
+    /// Queries IOPMPowerSource, AppleSmartBattery, and AppleARMPMUCharger to obtain full hardware telemetry.
+    func readRegistryProperties(classNames: [String] = ["IOPMPowerSource", "AppleSmartBattery", "AppleARMPMUCharger"]) -> [String: Any]? {
+        var merged: [String: Any] = [:]
+        for className in candidateClasses(from: classNames) {
+            if let dict = readSingleRegistryProperties(className: className) {
+                merged.merge(dict) { current, _ in current }
+            }
+        }
+        return merged.isEmpty ? nil : merged
+    }
+
+    /// Full property dictionary of a specific service class.
+    func readRegistryProperties(className: String) -> [String: Any]? {
+        readSingleRegistryProperties(className: className)
+    }
+
+    private func candidateClasses(from list: [String]) -> [String] {
+        list
+    }
+
+    private func readSingleRegistryProperties(className: String) -> [String: Any]? {
         guard let matching = serviceMatching(className) else { return nil }
         // IOServiceGetMatchingService consumes the +1 reference returned by
         // IOServiceMatching, so hand it over unretained rather than letting ARC
