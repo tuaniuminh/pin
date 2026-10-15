@@ -7,9 +7,9 @@ import Foundation
 /// data so it can cross the process boundary: ActivityKit encodes it as a live
 /// activity's content state, and the app writes it into the App Group container
 /// for the widget to fall back on.
-struct ChargeReading: Codable, Hashable {
+struct ChargeReading: Codable, Hashable, Sendable {
     /// Where `watts` was measured, which decides the caption under it.
-    enum Source: String, Codable, Hashable {
+    enum Source: String, Codable, Hashable, Sendable {
         /// USB-C input: voltage × current at the port.
         case charger
         /// Wireless input. Only possible on a phone that exposes a coil current.

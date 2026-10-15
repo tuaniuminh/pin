@@ -2,7 +2,7 @@ import ActivityKit
 import AppIntents
 import Foundation
 
-enum LiveActivityMetric: String, Codable, Hashable, CaseIterable, Identifiable {
+enum LiveActivityMetric: String, Codable, Hashable, CaseIterable, Identifiable, Sendable {
     case chargingPower
     case socTemperature
     case batteryTemperature
@@ -14,7 +14,7 @@ enum LiveActivityMetric: String, Codable, Hashable, CaseIterable, Identifiable {
 /// The existing charge reading plus the extra temperatures needed by the expanded
 /// activity. Keeping the `ChargeReading` intact preserves the widget wording and
 /// charger-bound lifecycle while allowing the compact presentation to be selected.
-struct ChargeActivityContentState: Codable, Hashable {
+struct ChargeActivityContentState: Codable, Hashable, Sendable {
     var reading: ChargeReading
     var socTemperature: Double?
     var hottestTemperature: Double?
@@ -37,7 +37,7 @@ struct ChargeActivityContentState: Codable, Hashable {
 /// would never receive them. So every update carries a stale date, and the
 /// extension says the reading is out of date rather than showing an old number as
 /// if it were current.
-struct ChargeActivityAttributes: ActivityAttributes {
+struct ChargeActivityAttributes: ActivityAttributes, Sendable {
     typealias ContentState = ChargeActivityContentState
 
     /// When the charger was connected.

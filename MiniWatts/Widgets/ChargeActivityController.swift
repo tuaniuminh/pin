@@ -129,7 +129,13 @@ final class ChargeActivityController {
     // to compile that. So the lookup and the call happen together off the actor: only an
     // id and the content, which are both `Sendable`, cross over.
 
-    @concurrent
+    nonisolated static func endAll() {
+        let ids = Activity<ChargeActivityAttributes>.activities.map(\.id)
+        for id in ids {
+            Task { await end(id, nil, dismissal: .immediate) }
+        }
+    }
+
     nonisolated private static func update(_ id: String,
                                            state: ChargeActivityContentState,
                                            staleAfter: TimeInterval) async {
@@ -143,7 +149,6 @@ final class ChargeActivityController {
         }
     }
 
-    @concurrent
     nonisolated private static func end(_ id: String,
                                         _ state: ChargeActivityContentState?,
                                         dismissal: ActivityUIDismissalPolicy) async {

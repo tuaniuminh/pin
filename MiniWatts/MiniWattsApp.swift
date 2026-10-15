@@ -29,15 +29,7 @@ struct MiniWattsApp: App {
                 .environmentObject(floatingMeter)
                 .onOpenURL { url in
                     if url.scheme == "miniwatts" && url.host == "end-live-activity" {
-                        for activity in Activity<ChargeActivityAttributes>.activities {
-                            Task {
-                                if #available(iOS 16.2, *) {
-                                    await activity.end(nil, dismissalPolicy: .immediate)
-                                } else {
-                                    await activity.end(using: nil, dismissalPolicy: .immediate)
-                                }
-                            }
-                        }
+                        ChargeActivityController.endAll()
                     }
                 }
         }

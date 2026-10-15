@@ -317,7 +317,7 @@ final class FloatingMeterController: ObservableObject {
     /// thread, hence `assumeIsolated` rather than a hop, which would report a
     /// stopped window a frame late.
     private final class Proxy: NSObject, AVPictureInPictureControllerDelegate,
-                               AVPictureInPictureSampleBufferPlaybackDelegate {
+                               AVPictureInPictureSampleBufferPlaybackDelegate, @unchecked Sendable {
         private weak var owner: FloatingMeterController?
 
         init(owner: FloatingMeterController) {
@@ -325,15 +325,18 @@ final class FloatingMeterController: ObservableObject {
         }
 
         nonisolated func pictureInPictureControllerDidStartPictureInPicture(_ controller: AVPictureInPictureController) {
+            let owner = self.owner
             MainActor.assumeIsolated { owner?.didStart() }
         }
 
         nonisolated func pictureInPictureControllerDidStopPictureInPicture(_ controller: AVPictureInPictureController) {
+            let owner = self.owner
             MainActor.assumeIsolated { owner?.didStop() }
         }
 
         nonisolated func pictureInPictureController(_ controller: AVPictureInPictureController,
                                                     failedToStartPictureInPictureWithError error: any Error) {
+            let owner = self.owner
             MainActor.assumeIsolated { owner?.didFail(error) }
         }
 
