@@ -13,7 +13,7 @@ import Foundation
 /// - it ends when the charger comes out — which, if that happens while the app is
 ///   suspended, the app only learns on its next tick. The stale date covers the gap,
 ///   and the End button (`EndChargeActivityIntent`) lets the user close it meanwhile.
-enum DismissalPolicy: Sendable {
+nonisolated enum DismissalPolicy: Sendable {
     case immediate
     case after(Date)
 

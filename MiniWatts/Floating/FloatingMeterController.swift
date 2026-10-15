@@ -325,19 +325,16 @@ final class FloatingMeterController: ObservableObject {
         }
 
         nonisolated func pictureInPictureControllerDidStartPictureInPicture(_ controller: AVPictureInPictureController) {
-            let owner = self.owner
-            MainActor.assumeIsolated { owner?.didStart() }
+            MainActor.assumeIsolated { self.owner?.didStart() }
         }
 
         nonisolated func pictureInPictureControllerDidStopPictureInPicture(_ controller: AVPictureInPictureController) {
-            let owner = self.owner
-            MainActor.assumeIsolated { owner?.didStop() }
+            MainActor.assumeIsolated { self.owner?.didStop() }
         }
 
         nonisolated func pictureInPictureController(_ controller: AVPictureInPictureController,
                                                     failedToStartPictureInPictureWithError error: any Error) {
-            let owner = self.owner
-            MainActor.assumeIsolated { owner?.didFail(error) }
+            MainActor.assumeIsolated { self.owner?.didFail(error) }
         }
 
         /// Tapping the window's restore button brings MiniWatts back. There is no
