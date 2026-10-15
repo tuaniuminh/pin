@@ -1,5 +1,6 @@
 import Foundation
 import QuartzCore
+import UIKit
 import Combine
 
 /// Diagnostic probe ("con bọ đo lường hiệu năng") that monitors:
@@ -63,7 +64,6 @@ final class PerformanceProbe: ObservableObject {
         }
         let link = CADisplayLink(target: target, selector: #selector(DisplayLinkTarget.step))
         link.add(to: .main, forMode: .common)
-        link.add(to: .main, forMode: .tracking)
         self.displayLink = link
     }
 
