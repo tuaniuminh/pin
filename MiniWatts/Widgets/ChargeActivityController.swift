@@ -13,6 +13,18 @@ import Foundation
 /// - it ends when the charger comes out — which, if that happens while the app is
 ///   suspended, the app only learns on its next tick. The stale date covers the gap,
 ///   and the End button (`EndChargeActivityIntent`) lets the user close it meanwhile.
+enum DismissalPolicy: Sendable {
+    case immediate
+    case after(Date)
+
+    var systemPolicy: ActivityUIDismissalPolicy {
+        switch self {
+        case .immediate: return .immediate
+        case .after(let date): return .after(date)
+        }
+    }
+}
+
 final class ChargeActivityController {
     private var activity: Activity<ChargeActivityAttributes>?
     private var adopted = false
@@ -71,7 +83,7 @@ final class ChargeActivityController {
         let existing = Activity<ChargeActivityAttributes>.activities
         activity = existing.first
         for id in existing.dropFirst().map(\.id) {
-            Task { await Self.end(id, nil, dismissal: .immediate) }
+            Task.detached { await Self.end(id, nil, dismissal: .immediate) }
         }
     }
 
@@ -110,17 +122,17 @@ final class ChargeActivityController {
         lastSentAt = state.date
         let id = activity.id
         let staleAfter = Self.staleAfter
-        Task { await Self.update(id, state: state, staleAfter: staleAfter) }
+        Task.detached { await Self.update(id, state: state, staleAfter: staleAfter) }
     }
 
     private func end(with state: ChargeActivityContentState,
-                     dismissal: ActivityUIDismissalPolicy) {
+                     dismissal: DismissalPolicy) {
         guard let activity else { return }
         self.activity = nil
         lastSent = nil
         lastSentAt = .distantPast
         let id = activity.id
-        Task { await Self.end(id, state, dismissal: dismissal) }
+        Task.detached { await Self.end(id, state, dismissal: dismissal) }
     }
 
     // `Activity` is not `Sendable`, and its `update` and `end` are nonisolated async.
@@ -132,7 +144,7 @@ final class ChargeActivityController {
     nonisolated static func endAll() {
         let ids = Activity<ChargeActivityAttributes>.activities.map(\.id)
         for id in ids {
-            Task { await end(id, nil, dismissal: .immediate) }
+            Task.detached { await end(id, nil, dismissal: .immediate) }
         }
     }
 
@@ -151,13 +163,14 @@ final class ChargeActivityController {
 
     nonisolated private static func end(_ id: String,
                                         _ state: ChargeActivityContentState?,
-                                        dismissal: ActivityUIDismissalPolicy) async {
+                                        dismissal: DismissalPolicy) async {
         guard let act = activity(id) else { return }
+        let policy = dismissal.systemPolicy
         if #available(iOS 16.2, *) {
             let content = state.map { ActivityContent(state: $0, staleDate: nil) }
-            await act.end(content, dismissalPolicy: dismissal)
+            await act.end(content, dismissalPolicy: policy)
         } else {
-            await act.end(using: state, dismissalPolicy: dismissal)
+            await act.end(using: state, dismissalPolicy: policy)
         }
     }
 
