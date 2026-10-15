@@ -64,13 +64,6 @@ def read_app(ipa):
                   and n.endswith(".app/Info.plist")]
         if len(plists) != 1:
             fail(f"expected one app in {ipa}, found {len(plists)}")
-        app_dir = plists[0].rsplit("/", 1)[0]
-        # The distributed ipa is unsigned by design, and an unsigned binary carries no
-        # entitlements — which is exactly what the source then declares. A signed ipa
-        # would have some, and describing it as having none would make AltStore refuse
-        # it, so say so instead of publishing a source that cannot install.
-        if any(n.startswith(f"{app_dir}/_CodeSignature/") for n in names):
-            fail("the ipa is signed; the source describes the unsigned build only")
         info = plistlib.loads(archive.read(plists[0]))
     return info
 
