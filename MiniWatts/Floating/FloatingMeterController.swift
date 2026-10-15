@@ -186,7 +186,7 @@ final class FloatingMeterController: ObservableObject {
         // And a start that is accepted but never confirmed would leave the button
         // spinning on `.starting` for the rest of the run.
         Task { [weak self] in
-            try? await Task.sleep(for: .seconds(6))
+            try? await Task.sleep(nanoseconds: 6_000_000_000)
             guard let self, status == .starting else { return }
             status = .notReady
         }
@@ -235,7 +235,7 @@ final class FloatingMeterController: ObservableObject {
     // MARK: Rendering
 
     private func makeSample() -> CMSampleBuffer? {
-        let renderer = ImageRenderer(content: FloatingMeterTelemetryFrame(
+        let frame = FloatingMeterTelemetryFrame(
             data: latestData,
             showPower: showPower,
             showTemperatures: showTemperatures,
@@ -244,10 +244,27 @@ final class FloatingMeterController: ObservableObject {
         )
         .frame(width: Self.frameSize.width, height: Self.frameSize.height)
         .environment(\.colorScheme, .dark)
-        .environment(\.locale, .current))
-        renderer.scale = 1
-        renderer.isOpaque = true
-        guard let image = renderer.cgImage else { return nil }
+        .environment(\.locale, .current)
+
+        let image: CGImage?
+        if #available(iOS 16.0, *) {
+            let renderer = ImageRenderer(content: frame)
+            renderer.scale = 1
+            renderer.isOpaque = true
+            image = renderer.cgImage
+        } else {
+            let controller = UIHostingController(rootView: frame)
+            controller.view.bounds = CGRect(origin: .zero, size: Self.frameSize)
+            controller.view.backgroundColor = .black
+            controller.view.layoutIfNeeded()
+
+            let uiRenderer = UIGraphicsImageRenderer(size: Self.frameSize)
+            let uiImage = uiRenderer.image { ctx in
+                controller.view.layer.render(in: ctx.cgContext)
+            }
+            image = uiImage.cgImage
+        }
+        guard let image else { return nil }
 
         let pixels = CGSize(width: CGFloat(image.width), height: CGFloat(image.height))
         guard let pool = pixelBufferPool(pixels) else { return nil }
