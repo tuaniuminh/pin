@@ -7,7 +7,7 @@ struct DashboardView: View {
     private var plugged: Bool { snapshot.externalConnected }
 
     var body: some View {
-        PageScaffold("MiniWatts", glow: glowColor) {
+        PageScaffold("Wattcheck", glow: glowColor) {
             heroPanel
             if monitor.thermal.state.isThrottling { throttleBanner }
             batteryPanel

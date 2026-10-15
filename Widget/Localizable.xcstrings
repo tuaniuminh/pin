@@ -452,18 +452,18 @@
         }
       }
     },
-    "Open MiniWatts once, then check back.": {
+    "Open Wattcheck once, then check back.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "请先打开一次 MiniWatts，稍后再来查看。"
+            "value": "请先打开一次 Wattcheck，稍后再来查看。"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hãy mở MiniWatts một lần, sau đó quay lại kiểm tra."
+            "value": "Hãy mở Wattcheck một lần, sau đó quay lại kiểm tra."
           }
         }
       }
@@ -484,18 +484,18 @@
         }
       }
     },
-    "Paused — open MiniWatts to resume": {
+    "Paused — open Wattcheck to resume": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "已暂停 — 打开 MiniWatts 以继续"
+            "value": "已暂停 — 打开 Wattcheck 以继续"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Đã tạm dừng — mở MiniWatts để tiếp tục"
+            "value": "Đã tạm dừng — mở Wattcheck để tiếp tục"
           }
         }
       }

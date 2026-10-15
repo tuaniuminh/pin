@@ -122,9 +122,11 @@ if [ "$MODE" = "unsigned" ]; then
   cp MiniWatts/MiniWatts.entitlements "$BUILD_DIR/Payload/$SCHEME.app/entitlements.plist"
   codesign -s - --force --entitlements MiniWatts/MiniWatts.entitlements "$BUILD_DIR/Payload/$SCHEME.app"
 
-  (cd "$BUILD_DIR" && zip -qry "export/$SCHEME-unsigned.ipa" Payload)
+  VERSION_TAG="${MARKETING_VERSION:+v$MARKETING_VERSION-}"
+  IPA_FILENAME="Wattcheck-${VERSION_TAG}unsigned.ipa"
+  (cd "$BUILD_DIR" && zip -qry "export/$IPA_FILENAME" Payload)
   rm -rf "$BUILD_DIR/Payload"
-  IPA="$EXPORT_DIR/$SCHEME-unsigned.ipa"
+  IPA="$EXPORT_DIR/$IPA_FILENAME"
 else
   echo "==> Archiving ($METHOD)"
   xcodebuild archive \

@@ -711,18 +711,18 @@
         }
       }
     },
-    "A session starts when you plug in and is saved when you unplug. Energy is integrated from the live sensors, so keep MiniWatts in the foreground for the totals to cover the whole charge.": {
+    "A session starts when you plug in and is saved when you unplug. Energy is integrated from the live sensors, so keep Wattcheck in the foreground for the totals to cover the whole charge.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "插入充电器时开始记录会话，拔出时自动保存。电量数据由实时传感器积分计算得出，因此请将 MiniWatts 保持在前台运行，以确保完整记录整个充电过程。"
+            "value": "插入充电器时开始记录会话，拔出时自动保存。电量数据由实时传感器积分计算得出，因此请将 Wattcheck 保持在前台运行，以确保完整记录整个充电过程。"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Một phiên bắt đầu khi bạn cắm sạc và được lưu khi bạn rút sạc. Năng lượng được tích phân từ các cảm biến thời gian thực, vì vậy hãy giữ MiniWatts ở chế độ tiền cảnh để ghi lại toàn bộ quá trình sạc."
+            "value": "Một phiên bắt đầu khi bạn cắm sạc và được lưu khi bạn rút sạc. Năng lượng được tích phân từ các cảm biến thời gian thực, vì vậy hãy giữ Wattcheck ở chế độ tiền cảnh để ghi lại toàn bộ quá trình sạc."
           }
         }
       }
@@ -2285,34 +2285,34 @@
         }
       }
     },
-    "MiniWatts": {
+    "Wattcheck": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "MiniWatts"
+            "value": "Wattcheck"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "MiniWatts"
+            "value": "Wattcheck"
           }
         }
       }
     },
-    "MiniWatts reads the phone's own power management sensors through private frameworks — IOKit, IOHIDEventSystemClient and BatteryCenter. Nothing leaves the device and nothing is written outside the app's own container.": {
+    "Wattcheck reads the phone's own power management sensors through private frameworks — IOKit, IOHIDEventSystemClient and BatteryCenter. Nothing leaves the device and nothing is written outside the app's own container.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "MiniWatts 通过私有框架（IOKit、IOHIDEventSystemClient 和 BatteryCenter）读取手机自身的电源管理传感器。所有数据均保留在设备本地，且不会在应用自身的容器外写入任何内容。"
+            "value": "Wattcheck 通过私有框架（IOKit、IOHIDEventSystemClient 和 BatteryCenter）读取手机自身的电源管理传感器。所有数据均保留在设备本地，且不会在应用自身的容器外写入任何内容。"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "MiniWatts đọc các cảm biến quản lý nguồn của điện thoại thông qua các framework riêng tư — IOKit, IOHIDEventSystemClient và BatteryCenter. Mọi dữ liệu đều lưu trên thiết bị và không có gì được ghi bên ngoài container của ứng dụng."
+            "value": "Wattcheck đọc các cảm biến quản lý nguồn của điện thoại thông qua các framework riêng tư — IOKit, IOHIDEventSystemClient và BatteryCenter. Mọi dữ liệu đều lưu trên thiết bị và không có gì được ghi bên ngoài container của ứng dụng."
           }
         }
       }
@@ -2845,18 +2845,18 @@
         }
       }
     },
-    "Sensors can only be read while MiniWatts is on screen, so a charge is only recorded for as long as the phone stays awake. With this on, the screen is held on — but only while a charger is connected, never on battery.": {
+    "Sensors can only be read while Wattcheck is on screen, so a charge is only recorded for as long as the phone stays awake. With this on, the screen is held on — but only while a charger is connected, never on battery.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "只有 MiniWatts 在前台时才能读取传感器，所以一次充电只能记录到屏幕保持点亮为止。打开后会保持屏幕常亮——但仅限连接充电器时，用电池时绝不会。"
+            "value": "只有 Wattcheck 在前台时才能读取传感器，所以一次充电只能记录到屏幕保持点亮为止。打开后会保持屏幕常亮——但仅限连接充电器时，用电池时绝不会。"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cảm biến chỉ có thể đọc được khi MiniWatts hiển thị trên màn hình, vì vậy một lần sạc chỉ được ghi lại chừng nào điện thoại còn thức. Khi bật tính năng này, màn hình sẽ được giữ luôn sáng — nhưng chỉ khi đã kết nối củ sạc, không bao giờ sáng khi dùng pin."
+            "value": "Cảm biến chỉ có thể đọc được khi Wattcheck hiển thị trên màn hình, vì vậy một lần sạc chỉ được ghi lại chừng nào điện thoại còn thức. Khi bật tính năng này, màn hình sẽ được giữ luôn sáng — nhưng chỉ khi đã kết nối củ sạc, không bao giờ sáng khi dùng pin."
           }
         }
       }
@@ -3581,34 +3581,34 @@
         }
       }
     },
-    "Shows charge power on the Lock Screen, in the Dynamic Island and in StandBy. It updates only while MiniWatts is running; once the app is suspended the reading is marked as paused rather than shown as current.": {
+    "Shows charge power on the Lock Screen, in the Dynamic Island and in StandBy. It updates only while Wattcheck is running; once the app is suspended the reading is marked as paused rather than shown as current.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在锁定屏幕、灵动岛和待机显示中显示充电功率。它只在 MiniWatts 运行时更新；App 被挂起后，读数会标记为已暂停，而不会被当作当前数值显示。"
+            "value": "在锁定屏幕、灵动岛和待机显示中显示充电功率。它只在 Wattcheck 运行时更新；App 被挂起后，读数会标记为已暂停，而不会被当作当前数值显示。"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hiển thị công suất sạc trên Màn hình khóa, trong Dynamic Island và ở chế độ Chờ (StandBy). Tính năng này chỉ cập nhật khi MiniWatts đang chạy; khi ứng dụng bị tạm dừng, số đo sẽ được đánh dấu là đã tạm dừng thay vì hiển thị như giá trị hiện tại."
+            "value": "Hiển thị công suất sạc trên Màn hình khóa, trong Dynamic Island và ở chế độ Chờ (StandBy). Tính năng này chỉ cập nhật khi Wattcheck đang chạy; khi ứng dụng bị tạm dừng, số đo sẽ được đánh dấu là đã tạm dừng thay vì hiển thị như giá trị hiện tại."
           }
         }
       }
     },
-    "Widgets read the sensors themselves whenever iOS refreshes them — usually every 15 to 60 minutes — and straight away when you plug in or unplug with MiniWatts open. Each one says when its numbers were taken.": {
+    "Widgets read the sensors themselves whenever iOS refreshes them — usually every 15 to 60 minutes — and straight away when you plug in or unplug with Wattcheck open. Each one says when its numbers were taken.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "小组件会在 iOS 刷新时自行读取传感器——通常每 15 到 60 分钟一次；MiniWatts 打开时插拔充电器会立即刷新。每个小组件都会注明数据的读取时间。"
+            "value": "小组件会在 iOS 刷新时自行读取传感器——通常每 15 到 60 分钟一次；Wattcheck 打开时插拔充电器会立即刷新。每个小组件都会注明数据的读取时间。"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Các widget tự đọc cảm biến bất cứ khi nào iOS làm mới chúng — thường từ 15 đến 60 phút một lần — và ngay lập tức khi bạn cắm hoặc rút sạc lúc MiniWatts đang mở. Mỗi widget đều hiển thị thời điểm số liệu được ghi nhận."
+            "value": "Các widget tự đọc cảm biến bất cứ khi nào iOS làm mới chúng — thường từ 15 đến 60 phút một lần — và ngay lập tức khi bạn cắm hoặc rút sạc lúc Wattcheck đang mở. Mỗi widget đều hiển thị thời điểm số liệu được ghi nhận."
           }
         }
       }
@@ -3677,50 +3677,50 @@
         }
       }
     },
-    "Puts the reading in a floating window that stays on top of other apps and keeps updating once a second. It is the only place iOS lets an app keep a number moving while it is off screen: a widget is refreshed a few times an hour, and the Lock Screen activity only moves while MiniWatts itself is running.": {
+    "Puts the reading in a floating window that stays on top of other apps and keeps updating once a second. It is the only place iOS lets an app keep a number moving while it is off screen: a widget is refreshed a few times an hour, and the Lock Screen activity only moves while Wattcheck itself is running.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "把读数放进一个悬浮窗，它浮在其他 App 上方，每秒更新一次。这是 iOS 唯一允许 App 在离开屏幕后还能让数字继续走动的地方：小组件每小时只刷新几次，锁屏实时活动也只在 MiniWatts 自己运行时才会变。"
+            "value": "把读数放进一个悬浮窗，它浮在其他 App 上方，每秒更新一次。这是 iOS 唯一允许 App 在离开屏幕后还能让数字继续走动的地方：小组件每小时只刷新几次，锁屏实时活动也只在 Wattcheck 自己运行时才会变。"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hiển thị số đo trong một cửa sổ nổi luôn nằm trên các ứng dụng khác và cập nhật mỗi giây một lần. Đây là nơi duy nhất iOS cho phép một ứng dụng duy trì số liệu thay đổi liên tục khi rời màn hình: tiện ích widget chỉ làm mới vài lần mỗi giờ, và hoạt động Màn hình khóa chỉ thay đổi khi chính MiniWatts đang chạy."
+            "value": "Hiển thị số đo trong một cửa sổ nổi luôn nằm trên các ứng dụng khác và cập nhật mỗi giây một lần. Đây là nơi duy nhất iOS cho phép một ứng dụng duy trì số liệu thay đổi liên tục khi rời màn hình: tiện ích widget chỉ làm mới vài lần mỗi giờ, và hoạt động Màn hình khóa chỉ thay đổi khi chính Wattcheck đang chạy."
           }
         }
       }
     },
-    "While the window is open MiniWatts keeps running, so it also records the charge with the screen locked — and it draws more power than being suspended. Close the window when you are done with it. No sound is ever played; the window uses the same system feature as a video playing in the corner, which is why the app declares audio playback at all.": {
+    "While the window is open Wattcheck keeps running, so it also records the charge with the screen locked — and it draws more power than being suspended. Close the window when you are done with it. No sound is ever played; the window uses the same system feature as a video playing in the corner, which is why the app declares audio playback at all.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "悬浮窗开着时 MiniWatts 会一直运行，所以锁屏后也能继续记录这次充电，同时也比挂起时更耗电，用完请关掉它。它不会播放任何声音：悬浮窗用的是和角落里播放视频相同的系统功能，App 声明音频播放能力只是为了它。"
+            "value": "悬浮窗开着时 Wattcheck 会一直运行，所以锁屏后也能继续记录这次充电，同时也比挂起时更耗电，用完请关掉它。它不会播放任何声音：悬浮窗用的是和角落里播放视频相同的系统功能，App 声明音频播放能力只是为了它。"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Khi cửa sổ nổi đang mở, MiniWatts sẽ tiếp tục chạy, vì vậy nó cũng ghi lại quá trình sạc khi màn hình bị khóa — và điều này tiêu thụ nhiều pin hơn so với khi bị tạm dừng. Hãy đóng cửa sổ khi bạn đã xong. Ứng dụng không phát bất kỳ âm thanh nào; cửa sổ sử dụng cùng tính năng hệ thống như phát video ở góc màn hình, đó là lý do ứng dụng khai báo quyền phát âm thanh."
+            "value": "Khi cửa sổ nổi đang mở, Wattcheck sẽ tiếp tục chạy, vì vậy nó cũng ghi lại quá trình sạc khi màn hình bị khóa — và điều này tiêu thụ nhiều pin hơn so với khi bị tạm dừng. Hãy đóng cửa sổ khi bạn đã xong. Ứng dụng không phát bất kỳ âm thanh nào; cửa sổ sử dụng cùng tính năng hệ thống như phát video ở góc màn hình, đó là lý do ứng dụng khai báo quyền phát âm thanh."
           }
         }
       }
     },
-    "iOS will not open the window yet. Leave MiniWatts on screen for a moment and try again.": {
+    "iOS will not open the window yet. Leave Wattcheck on screen for a moment and try again.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "iOS 现在还不让打开这个窗口。让 MiniWatts 在屏幕上多停一会儿，再试一次。"
+            "value": "iOS 现在还不让打开这个窗口。让 Wattcheck 在屏幕上多停一会儿，再试一次。"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "iOS chưa cho phép mở cửa sổ này. Hãy để MiniWatts trên màn hình một lúc rồi thử lại."
+            "value": "iOS chưa cho phép mở cửa sổ này. Hãy để Wattcheck trên màn hình một lúc rồi thử lại."
           }
         }
       }
@@ -4077,18 +4077,18 @@
         }
       }
     },
-    "The activity starts while a charger is connected and MiniWatts is in front, refreshes while MiniWatts runs, and marks the reading paused once the app is suspended. Unplug with MiniWatts running and it ends two minutes later; unplug while it is suspended and it stays until MiniWatts runs again. Tap End on the activity to close it at any time.": {
+    "The activity starts while a charger is connected and Wattcheck is in front, refreshes while Wattcheck runs, and marks the reading paused once the app is suspended. Unplug with Wattcheck running and it ends two minutes later; unplug while it is suspended and it stays until Wattcheck runs again. Tap End on the activity to close it at any time.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "连接充电器且 MiniWatts 位于前台时会启动实时活动，并在 MiniWatts 运行期间持续刷新；App 被暂停后，读数会标记为已暂停。在 MiniWatts 运行时拔下充电器，两分钟后自动结束；如果拔下时 App 已被暂停，它会一直保留，直到 MiniWatts 再次运行。随时可以点实时活动上的“结束”把它关掉。"
+            "value": "连接充电器且 Wattcheck 位于前台时会启动实时活动，并在 Wattcheck 运行期间持续刷新；App 被暂停后，读数会标记为已暂停。在 Wattcheck 运行时拔下充电器，两分钟后自动结束；如果拔下时 App 已被暂停，它会一直保留，直到 Wattcheck 再次运行。随时可以点实时活动上的“结束”把它关掉。"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hoạt động bắt đầu khi củ sạc được kết nối và MiniWatts ở chế độ tiền cảnh, làm mới trong khi MiniWatts chạy, và đánh dấu số đo đã tạm dừng khi ứng dụng bị đình chỉ. Rút sạc trong khi MiniWatts đang chạy thì hoạt động sẽ kết thúc sau hai phút; rút sạc khi ứng dụng đang bị đình chỉ thì hoạt động sẽ giữ nguyên cho đến khi MiniWatts chạy lại. Nhấn Kết thúc trên hoạt động để đóng bất kỳ lúc nào."
+            "value": "Hoạt động bắt đầu khi củ sạc được kết nối và Wattcheck ở chế độ tiền cảnh, làm mới trong khi Wattcheck chạy, và đánh dấu số đo đã tạm dừng khi ứng dụng bị đình chỉ. Rút sạc trong khi Wattcheck đang chạy thì hoạt động sẽ kết thúc sau hai phút; rút sạc khi ứng dụng đang bị đình chỉ thì hoạt động sẽ giữ nguyên cho đến khi Wattcheck chạy lại. Nhấn Kết thúc trên hoạt động để đóng bất kỳ lúc nào."
           }
         }
       }

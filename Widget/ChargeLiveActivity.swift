@@ -218,7 +218,7 @@ struct ActivityFootnote: View {
     var body: some View {
         HStack(spacing: 6) {
             if context.isActivityStale {
-                Label("Paused — open MiniWatts to resume", systemImage: "pause.circle")
+                Label("Paused — open Wattcheck to resume", systemImage: "pause.circle")
                     .foregroundStyle(palette.loss)
             } else if showsStatus {
                 Text(context.state.reading.statusTitle)

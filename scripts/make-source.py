@@ -85,20 +85,20 @@ def main():
         .replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
     source = {
-        "name": "MiniWatts",
+        "name": "Wattcheck",
         # Not in AltStore's current format, but older AltStore and SideStore builds
         # identify a source by it. Harmless where it is ignored.
         "identifier": f"{BUNDLE_ID}.source",
         "sourceURL": f"https://github.com/{REPO}/releases/latest/download/apps.json",
         "subtitle": "Live charge power, battery and thermal sensors.",
-        "description": "The MiniWatts app, straight from its GitHub releases.",
+        "description": "The Wattcheck app, straight from its GitHub releases.",
         "iconURL": f"{RAW}/docs/icon.png",
         "website": f"https://github.com/{REPO}",
         "tintColor": "#0086B3",
         # No `marketplaceID` anywhere: SideStore takes its presence to mean a notarized
         # AltStore PAL source and refuses to add it.
         "apps": [{
-            "name": "MiniWatts",
+            "name": "Wattcheck",
             "bundleIdentifier": BUNDLE_ID,
             "developerName": "ResistanceTo",
             "subtitle": "Live charge power, battery and thermal sensors.",

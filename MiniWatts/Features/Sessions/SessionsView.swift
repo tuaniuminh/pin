@@ -53,7 +53,7 @@ struct SessionsView: View {
             }
             if monitor.sessions.isEmpty {
                 Panel("No finished charges yet", systemImage: "clock.arrow.circlepath") {
-                    EmptyNote(text: "A session starts when you plug in and is saved when you unplug. Energy is integrated from the live sensors, so keep MiniWatts in the foreground for the totals to cover the whole charge.",
+                    EmptyNote(text: "A session starts when you plug in and is saved when you unplug. Energy is integrated from the live sensors, so keep Wattcheck in the foreground for the totals to cover the whole charge.",
                               systemImage: "bolt.badge.clock")
                 }
             } else {

@@ -310,7 +310,7 @@ struct DebugView: View {
     }
 
     private func fullDump() -> String {
-        var lines: [String] = ["MiniWatts raw dump — \(Formatting.timestamp(.now))"]
+        var lines: [String] = ["Wattcheck raw dump — \(Formatting.timestamp(.now))"]
         lines.append("\n" + perf.formattedSummary())
         lines.append("\n# Diagnostics")
         lines.append(contentsOf: monitor.diagnostics)

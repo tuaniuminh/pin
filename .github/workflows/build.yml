@@ -89,7 +89,9 @@ jobs:
 
       # Nothing about the machine that produced the build may reach the artifact.
       - name: Verify the ipa carries no identifying data
-        run: ./scripts/verify-clean.sh build/export/MiniWatts-unsigned.ipa
+        run: |
+          ipa_file=$(ls build/export/*.ipa | head -1)
+          ./scripts/verify-clean.sh "$ipa_file"
 
       # The version reaches the bundle only as a build-setting override. If that ever
       # stops working, a release named v1.2.0 would quietly ship a binary saying 1.0.
@@ -97,7 +99,8 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
           work=$(mktemp -d)
-          unzip -q build/export/MiniWatts-unsigned.ipa -d "$work"
+          ipa_file=$(ls build/export/*.ipa | head -1)
+          unzip -q "$ipa_file" -d "$work"
           plist="$(ls -d "$work"/Payload/*.app)/Info.plist"
           built=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$plist")
           number=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$plist")
@@ -110,8 +113,8 @@ jobs:
       - name: Upload ipa
         uses: actions/upload-artifact@v4
         with:
-          name: MiniWatts-unsigned-ipa
-          path: build/export/MiniWatts-unsigned.ipa
+          name: Wattcheck-unsigned-ipa
+          path: build/export/*.ipa
           if-no-files-found: error
 
       # Kept separately: the ipa is stripped, so a crash report needs this to
@@ -119,7 +122,7 @@ jobs:
       - name: Upload dSYM
         uses: actions/upload-artifact@v4
         with:
-          name: MiniWatts-dSYM
+          name: Wattcheck-dSYM
           path: build/DerivedData/Build/Products/Release-iphoneos/*.dSYM
           if-no-files-found: warn
 
@@ -131,14 +134,16 @@ jobs:
       # disagrees with its source on any of them.
       - name: Write the app source
         if: startsWith(github.ref, 'refs/tags/v')
-        run: python3 scripts/make-source.py build/export/MiniWatts-unsigned.ipa "$GITHUB_REF_NAME" > build/export/apps.json
+        run: |
+          ipa_file=$(ls build/export/*.ipa | head -1)
+          python3 scripts/make-source.py "$ipa_file" "$GITHUB_REF_NAME" > build/export/apps.json
 
       - name: Publish release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            build/export/MiniWatts-unsigned.ipa
+            build/export/*.ipa
             build/export/apps.json
           fail_on_unmatched_files: true
           generate_release_notes: true
