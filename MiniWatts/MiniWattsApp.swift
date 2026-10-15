@@ -31,7 +31,11 @@ struct MiniWattsApp: App {
                     if url.scheme == "miniwatts" && url.host == "end-live-activity" {
                         for activity in Activity<ChargeActivityAttributes>.activities {
                             Task {
-                                await activity.end(nil, dismissalPolicy: .immediate)
+                                if #available(iOS 16.2, *) {
+                                    await activity.end(nil, dismissalPolicy: .immediate)
+                                } else {
+                                    await activity.end(using: nil, dismissalPolicy: .immediate)
+                                }
                             }
                         }
                     }
