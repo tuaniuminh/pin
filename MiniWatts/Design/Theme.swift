@@ -100,26 +100,14 @@ extension View {
     func mwCaption() -> some View {
         font(.system(size: 11, weight: .semibold, design: .rounded))
             .textCase(.uppercase)
-            .tracking(0.9)
             .foregroundStyle(Color.mwMuted)
     }
 
     /// A large tabular readout. Monospaced digits so the number stops jittering
     /// while it updates once a second.
-    ///
-    /// Readouts snap; none of them roll. The dial's did, with `.numericText()`, and
-    /// on an iPhone Air that one number cost more than everything else on the Power
-    /// page: the dial's `.animation` (since removed) put it into an animated
-    /// transaction every second, SwiftUI drew the digit roll — blurred glyphs, and
-    /// the gradient arcs around them — into a layer rendered on the CPU, and while
-    /// the page scrolled that layer was redrawn on every frame. 100–180 ms of main
-    /// thread a second, against 11 with the transition off. `.identity` is explicit,
-    /// not left out: a readout that ends up inside an animated transaction would
-    /// otherwise cross-fade.
     func mwReadout(size: CGFloat, weight: Font.Weight = .semibold) -> some View {
         font(.system(size: size, weight: weight, design: .rounded))
             .monospacedDigit()
-            .contentTransition(.identity)
     }
 
     func mwMono(size: CGFloat = 13, weight: Font.Weight = .regular) -> some View {

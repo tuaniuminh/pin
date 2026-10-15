@@ -215,7 +215,7 @@ struct SessionClimateChart: View {
     var height: CGFloat = 200
 
     private var socPoints: [Double] {
-        samples.compactMap { $0.batterySocPercent.map(Double.init) }
+        samples.map { Double($0.percent) }
     }
 
     private var tempPoints: [Double] {

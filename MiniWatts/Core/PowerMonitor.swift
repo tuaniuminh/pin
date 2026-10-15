@@ -197,7 +197,7 @@ final class PowerMonitor: ObservableObject {
         task = Task { [weak self] in
             while let self, !Task.isCancelled {
                 await self.refresh()
-                try? await Task.sleep(for: .seconds(1))
+                try? await Task.sleep(nanoseconds: 1_000_000_000)
             }
         }
     }
