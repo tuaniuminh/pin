@@ -10,7 +10,7 @@ struct SettingsView: View {
             ZStack {
                 Backdrop(glow: .mwAccent, glowIntensity: 0.6)
                 ScrollView {
-                    VStack(spacing: 14) {
+                    LazyVStack(spacing: 14) {
                         recordingPanel(keepAwake: Binding(
                             get: { monitor.keepScreenAwakeWhileCharging },
                             set: { monitor.keepScreenAwakeWhileCharging = $0 }

@@ -172,7 +172,7 @@ struct SessionDetailView: View {
         ZStack {
             Backdrop(glow: .mwBattery)
             ScrollView {
-                VStack(spacing: 14) {
+                LazyVStack(spacing: 14) {
                     energyPanel
                     powerPanel
                     climatePanel

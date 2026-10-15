@@ -24,7 +24,7 @@ struct DebugView: View {
         ZStack {
             Backdrop(glow: .mwMuted, glowIntensity: 0.5)
             ScrollView {
-                VStack(spacing: 14) {
+                LazyVStack(spacing: 14) {
                     performancePanel
                     diagnosticsPanel
                     sensorsPanel
@@ -124,7 +124,7 @@ struct DebugView: View {
             if monitor.snapshot.sensors.isEmpty {
                 EmptyNote(text: "No sensors returned a finite value.")
             } else {
-                VStack(spacing: 0) {
+                LazyVStack(spacing: 0) {
                     ForEach(monitor.snapshot.sensors
                         .filter { matches($0.name, $0.formatted) }
                         .sorted { $0.name < $1.name }) { reading in
@@ -254,7 +254,7 @@ struct DebugView: View {
     private func dictionaryPanel(_ title: LocalizedStringResource, systemImage: String, dictionary: [String: Any]?) -> some View {
         Panel(title, systemImage: systemImage, trailing: dictionary.map { Text("\($0.count) keys") }) {
             if let dictionary, !dictionary.isEmpty {
-                VStack(spacing: 0) {
+                LazyVStack(spacing: 0) {
                     ForEach(dictionary.keys.sorted()
                         .filter { matches($0, String(describing: dictionary[$0] ?? "")) }, id: \.self) { key in
                         DetailRow(rawLabel: key, value: String(describing: dictionary[key] ?? ""))

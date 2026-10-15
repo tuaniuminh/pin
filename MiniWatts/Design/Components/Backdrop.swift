@@ -37,11 +37,10 @@ struct Backdrop: View {
             // composite the same way.
             .drawingGroup()
 
-            RadialGradient(colors: [glow.opacity(0.22 * glowIntensity), .clear],
+            RadialGradient(colors: [glow.opacity(0.18 * glowIntensity), .clear],
                            center: .init(x: 0.5, y: 0.18),
                            startRadius: 0,
                            endRadius: 420)
-                .blendMode(.plusLighter)
                 .animation(.easeInOut(duration: 0.8), value: glow)
         }
         .ignoresSafeArea()

@@ -27,7 +27,7 @@ struct PhoneHeatMap: View {
                 ForEach(readings, id: \.zone) { reading in
                     Circle()
                         .fill(
-                            RadialGradient(colors: [Color.mwTemperature(reading.celsius).opacity(0.85), .clear],
+                            RadialGradient(colors: [Color.mwTemperature(reading.celsius).opacity(0.7), .clear],
                                            center: .center,
                                            startRadius: 0,
                                            endRadius: width * 0.42)
@@ -38,9 +38,9 @@ struct PhoneHeatMap: View {
                 }
             }
             .frame(width: width, height: height)
-            .blur(radius: 14)
-            .blendMode(.plusLighter)
+            .blur(radius: 12)
             .clipShape(shape)
+            .drawingGroup()
 
             // Sensor pins.
             ZStack {
