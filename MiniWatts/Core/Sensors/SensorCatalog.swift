@@ -7,7 +7,7 @@ import Foundation
 /// every name falls into a zone by keyword, and anything unrecognised lands in
 /// `.other` and is still shown. A new phone model degrades to a longer "other"
 /// list rather than to an empty screen.
-enum ThermalZone: String, CaseIterable, Identifiable {
+nonisolated enum ThermalZone: String, CaseIterable, Identifiable {
     case battery
     case charger
     case wirelessCoil
@@ -82,7 +82,7 @@ enum ThermalZone: String, CaseIterable, Identifiable {
     var order: Int { ThermalZone.allCases.firstIndex(of: self) ?? 99 }
 }
 
-enum SensorCatalog {
+nonisolated enum SensorCatalog {
     /// Human labels for the sensors we understand. Everything else keeps its raw name.
     private static let labels: [String: LocalizedStringResource] = [
         "Charger VQ0u": "USB-C input voltage",

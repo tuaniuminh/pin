@@ -2,7 +2,7 @@ import Combine
 import Foundation
 
 /// One point in the rolling live chart.
-struct LiveSample: Identifiable, Hashable {
+nonisolated struct LiveSample: Identifiable, Hashable {
     let date: Date
     let inputWatts: Double?
     let batteryWatts: Double?

@@ -11,7 +11,7 @@ import Foundation
 /// - powerd `IOPSCopyPowerSourcesInfo`: percent, charging flags, low power mode.
 /// - powerd `IOPSCopyExternalPowerAdapterDetails`: the full USB-PD handshake.
 /// - `IOPSCopyChargeStatus`: refused (kIOReturnNotPrivileged), kept for the record.
-final class IOKitBattery {
+nonisolated final class IOKitBattery {
     private typealias ServiceMatchingFn =
         @convention(c) (UnsafePointer<CChar>) -> Unmanaged<CFDictionary>?
     private typealias GetMatchingServiceFn =

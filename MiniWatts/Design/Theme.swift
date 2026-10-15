@@ -10,7 +10,7 @@ import UIKit
 /// isolated too — and UIKit calls that closure from whatever thread is resolving a
 /// dynamic colour during rendering. Under Swift 6 the compiler inserts an executor
 /// check there, so the app trapped on the first frame that painted a gradient.
-extension Color {
+nonisolated extension Color {
     static func mw(_ light: UInt32, _ dark: UInt32) -> Color {
         Color(UIColor { traits in
             UIColor(hex: traits.userInterfaceStyle == .dark ? dark : light)
@@ -75,7 +75,7 @@ extension Color {
     }
 }
 
-extension UIColor {
+nonisolated extension UIColor {
     convenience init(hex: UInt32) {
         self.init(red: CGFloat((hex >> 16) & 0xFF) / 255,
                   green: CGFloat((hex >> 8) & 0xFF) / 255,
@@ -84,7 +84,7 @@ extension UIColor {
     }
 }
 
-enum Theme {
+nonisolated enum Theme {
     static let cardRadius: CGFloat = 18
     static let cardPadding: CGFloat = 16
 
