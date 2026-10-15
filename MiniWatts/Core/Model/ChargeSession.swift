@@ -53,7 +53,7 @@ nonisolated struct ChargeSession: Codable, Identifiable, Hashable {
     /// Copy to fall back to when the adapter never identified itself. The adapter's
     /// own name is hardware and is shown verbatim; this is the only half that is
     /// translated, so the two are kept apart rather than merged into one `String`.
-    var fallbackTitle: LocalizedStringResource {
+    var fallbackTitle: MWLocalizedString {
         isWireless ? "Wireless charger" : "Unknown adapter"
     }
 

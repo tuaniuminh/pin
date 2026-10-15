@@ -79,7 +79,7 @@ struct AdapterView: View {
     /// The interesting question on this page is why the phone is not pulling the
     /// full rating, so the most likely explanation is spelled out rather than left
     /// for the user to infer from four separate numbers.
-    private var headroomReason: LocalizedStringResource? {
+    private var headroomReason: MWLocalizedString? {
         guard let utilisation = snapshot.adapterUtilisation, utilisation < 0.75 else { return nil }
         if monitor.thermal.state.isThrottling {
             return "Well under the adapter's rating while system thermal pressure is high. Charge current may be limited by iOS."
@@ -329,7 +329,7 @@ struct AdapterView: View {
         }
     }
 
-    private func resistanceVerdict(_ milliohms: Double) -> LocalizedStringResource {
+    private func resistanceVerdict(_ milliohms: Double) -> MWLocalizedString {
         switch milliohms {
         case ..<200:
             "Low. Nothing in this connection is holding the charge back."
@@ -342,10 +342,10 @@ struct AdapterView: View {
 }
 
 /// One row of the live-rails table. A named type rather than a tuple so the label
-/// can be a `LocalizedStringResource` and the row can carry its own identity.
+/// can be a `MWLocalizedString` and the row can carry its own identity.
 private struct RailRow: Identifiable {
     let id: String
-    let name: LocalizedStringResource
+    let name: MWLocalizedString
     let voltage: Double?
     let current: Double?
     let tint: Color
@@ -391,7 +391,7 @@ struct DetailRow: View {
     let value: String?
 
     /// A translated label.
-    init(label: LocalizedStringResource, value: String?) {
+    init(label: MWLocalizedString, value: String?) {
         self.label = Text(label)
         self.value = value
     }

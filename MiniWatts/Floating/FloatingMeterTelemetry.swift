@@ -279,9 +279,9 @@ struct FloatingMeterTelemetryFrame: View {
                                       symbol: "thermometer.high", detail: data?.hottestSensorName,
                                       compact: compact)
         if compact {
-            Grid(horizontalSpacing: 8, verticalSpacing: 8) {
-                GridRow { soc; battery }
-                GridRow { charger; hottest }
+            VStack(spacing: 8) {
+                HStack(spacing: 8) { soc; battery }
+                HStack(spacing: 8) { charger; hottest }
             }
         } else {
             HStack(spacing: 8) { soc; battery; charger; hottest }

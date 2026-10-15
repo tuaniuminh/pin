@@ -7,7 +7,7 @@ struct DashboardView: View {
     private var plugged: Bool { snapshot.externalConnected }
 
     var body: some View {
-        PageScaffold("Wattcheck", glow: glowColor) {
+        PageScaffold("Wattcheck-v1.7.5-ios15", glow: glowColor) {
             heroPanel
             if monitor.thermal.state.isThrottling { throttleBanner }
             batteryPanel
@@ -282,7 +282,7 @@ struct PowerFlowBar: View {
 
 struct LegendDot: View {
     let color: Color
-    let text: LocalizedStringResource
+    let text: MWLocalizedString
     var dashed: Bool = false
 
     var body: some View {

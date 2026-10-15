@@ -138,12 +138,12 @@ private struct ScreenAwakeHolder: View {
 /// `PageBackdrop` re-run, and the chrome stays as it is. For the same reason a
 /// page must not read the monitor in its own body outside these closures.
 struct PageScaffold<Content: View>: View {
-    let title: LocalizedStringResource
+    let title: MWLocalizedString
     var glow: () -> Color
     var toolbar: AnyView?
     @ViewBuilder var content: () -> Content
 
-    init(_ title: LocalizedStringResource,
+    init(_ title: MWLocalizedString,
          glow: @autoclosure @escaping () -> Color = .mwAccent,
          toolbar: AnyView? = nil,
          @ViewBuilder content: @escaping () -> Content) {
@@ -154,7 +154,7 @@ struct PageScaffold<Content: View>: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationView {
             ZStack {
                 PageBackdrop(glow: glow)
                 ScrollView(showsIndicators: false) {
@@ -180,11 +180,10 @@ struct PageScaffold<Content: View>: View {
                     .horizontalContainerCap(760)
                     .frame(maxWidth: .infinity)
                 }
-                .scrollIndicators(.hidden)
             }
-            .toolbar(.hidden, for: .navigationBar)
             .navigationBarHidden(true)
         }
+        .navigationViewStyle(.stack)
     }
 }
 
@@ -222,7 +221,7 @@ struct PartialInputNote: View {
 }
 
 struct EmptyNote: View {
-    let text: LocalizedStringResource
+    let text: MWLocalizedString
     var systemImage: String = "info.circle"
 
     var body: some View {

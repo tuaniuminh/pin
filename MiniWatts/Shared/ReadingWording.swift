@@ -6,7 +6,7 @@ import Foundation
 /// floating meter all describe the same reading, and they have already drifted once.
 /// Copy only — no views. The catalogs of both targets carry these strings.
 extension ChargeReading.Source {
-    var caption: LocalizedStringResource {
+    var caption: MWLocalizedString {
         switch self {
         case .charger: return "at phone port"
         case .magSafe: return "at charging coil"
@@ -21,7 +21,7 @@ extension ChargeReading {
     /// plugged in, not charging — is what the app's own status line says, and a
     /// widget saying “unknown” beside it would be the two disagreeing about one
     /// reading.
-    var statusTitle: LocalizedStringResource {
+    var statusTitle: MWLocalizedString {
         if isOnHold { return "Charging on hold" }
         if isFull { return "Full" }
         if isCharging { return "Charging" }

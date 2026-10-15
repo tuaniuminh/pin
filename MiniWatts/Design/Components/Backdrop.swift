@@ -49,7 +49,7 @@ struct Backdrop: View {
 
 /// A titled panel. Everything on every screen sits in one of these.
 struct Panel<Content: View>: View {
-    var title: LocalizedStringResource?
+    var title: MWLocalizedString?
     var systemImage: String?
     /// Either translated copy — `Text("…")` — or a measured value that must never
     /// be looked up in the string catalog — `Text(verbatim:)`. Panels carry both:
@@ -58,7 +58,7 @@ struct Panel<Content: View>: View {
     var trailing: Text?
     @ViewBuilder var content: () -> Content
 
-    init(_ title: LocalizedStringResource? = nil,
+    init(_ title: MWLocalizedString? = nil,
          systemImage: String? = nil,
          trailing: Text? = nil,
          @ViewBuilder content: @escaping () -> Content) {
@@ -105,7 +105,7 @@ struct Panel<Content: View>: View {
 
 /// Caption, number, unit. The building block of every panel.
 struct Metric: View {
-    let caption: LocalizedStringResource
+    let caption: MWLocalizedString
     let value: String
     var unit: String?
     var tint: Color = .primary

@@ -18,7 +18,7 @@ nonisolated struct ExternalBatteryDevice: Identifiable, Hashable {
     enum Transport: Int {
         case internalPower = 1, wired = 2, wireless = 3
 
-        var title: LocalizedStringResource {
+        var title: MWLocalizedString {
             switch self {
             case .internalPower: return "Internal"
             case .wired: return "Wired"
@@ -53,7 +53,7 @@ nonisolated struct ExternalBatteryDevice: Identifiable, Hashable {
 
     /// Which piece of a multi-part accessory this is, translated. Nil when the
     /// accessory is a single unit.
-    var partTitle: LocalizedStringResource? {
+    var partTitle: MWLocalizedString? {
         switch parts {
         case 1: return "Left"
         case 2: return "Right"
@@ -109,7 +109,7 @@ nonisolated final class BatteryCenterBridge {
         /// is also what comes back with a Watch on your wrist, and is indistinguishable
         /// from an honest one. Which step failed is a question for Raw data; see
         /// `diagnostic`.
-        var userMessage: LocalizedStringResource? {
+        var userMessage: MWLocalizedString? {
             switch self {
             case .ready: return nil
             case .empty, .frameworkMissing, .controllerClassMissing,
@@ -119,7 +119,7 @@ nonisolated final class BatteryCenterBridge {
         }
 
         /// For Raw data: which step failed, in enough detail to act on.
-        var diagnostic: LocalizedStringResource? {
+        var diagnostic: MWLocalizedString? {
             switch self {
             case .ready: return nil
             case .frameworkMissing(let reason):

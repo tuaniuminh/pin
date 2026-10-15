@@ -197,11 +197,9 @@ struct SessionDetailView: View {
                 .padding(.bottom, 24)
                 .horizontalContainerCap(nil)
             }
-            .scrollIndicators(.hidden)
         }
         .navigationTitle(session.titleText)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar(.visible, for: .navigationBar)
         .navigationBarHidden(false)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -336,7 +334,7 @@ struct SessionDetailView: View {
     /// Where this session landed among the others on the same charger. Only the two
     /// ends are worth a sentence — being the best says the connection is as good as
     /// this charger has seen, and being worse than the best says by how much.
-    private func comparisonNote(_ fits: [ChargeSession]) -> LocalizedStringResource? {
+    private func comparisonNote(_ fits: [ChargeSession]) -> MWLocalizedString? {
         guard let best = fits.first?.pathMilliohms,
               let mine = fits.first(where: { $0.id == session.id })?.pathMilliohms else { return nil }
         let excess = mine - best

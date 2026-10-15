@@ -557,10 +557,10 @@ final class PowerMonitor: ObservableObject {
     /// to carry a `primaryWatts` that answered a simpler version of the same
     /// question, which nothing called, while `DashboardView` open-coded this. One
     /// answer, in the layer that can actually give it.
-    var headline: (watts: Double, caption: LocalizedStringResource)? {
+    var headline: (watts: Double, caption: MWLocalizedString)? {
         if snapshot.externalConnected {
             if let watts = snapshot.inputWatts {
-                // Written out rather than as a ternary in the tuple. `LocalizedStringResource`
+                // Written out rather than as a ternary in the tuple. `MWLocalizedString`
                 // literals want to be at their own return site so both transport labels
                 // reach the catalog.
                 if snapshot.isWirelessInput { return (watts, "at charging coil") }
@@ -595,10 +595,10 @@ final class PowerMonitor: ObservableObject {
     }
 
     /// Why the accessory list is empty, in the app's voice, for the Devices screen.
-    var batteryCenterStatus: LocalizedStringResource? { batteryCenter.status.userMessage }
+    var batteryCenterStatus: MWLocalizedString? { batteryCenter.status.userMessage }
 
     /// The same thing with the failing step named, for Raw data.
-    var batteryCenterDiagnostic: LocalizedStringResource? { batteryCenter.status.diagnostic }
+    var batteryCenterDiagnostic: MWLocalizedString? { batteryCenter.status.diagnostic }
 
     /// Every HID service in the system, for the debug view.
     func hidInventory() async -> [HIDSensors.ServiceInfo] {

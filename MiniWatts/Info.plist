@@ -5,7 +5,7 @@
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDisplayName</key>
-	<string>Wattcheck</string>
+	<string>Wattcheck-v1.7.5-ios15</string>
 	<!-- Picture in Picture is built on the media playback stack and will not start
 	     without this. MiniWatts plays no audio: the floating meter is a video
 	     surface it paints once a second, and its audio session mixes with others

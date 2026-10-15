@@ -5,6 +5,5 @@ import WidgetKit
 struct MiniWattsWidgets: WidgetBundle {
     var body: some Widget {
         BatteryWidget()
-        ChargeLiveActivity()
     }
 }

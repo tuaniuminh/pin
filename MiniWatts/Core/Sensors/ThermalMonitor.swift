@@ -33,7 +33,7 @@ final class ThermalMonitor: ObservableObject {
 }
 
 extension ProcessInfo.ThermalState {
-    var title: LocalizedStringResource {
+    var title: MWLocalizedString {
         switch self {
         case .nominal: return "Nominal"
         case .fair: return "Fair"
@@ -45,7 +45,7 @@ extension ProcessInfo.ThermalState {
 
     /// How system thermal pressure can affect charging. This is a system-level
     /// signal, not a direct measurement of the charger controller's limiter.
-    var chargingEffect: LocalizedStringResource {
+    var chargingEffect: MWLocalizedString {
         switch self {
         case .nominal: return "No elevated system thermal pressure."
         case .fair: return "Warming up. iOS may trim performance or charge current."

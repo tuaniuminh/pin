@@ -11,7 +11,7 @@ struct PowerRing: View {
     let fullScale: Double
     /// Optional: with no reading at all the dial says so itself, and a caption
     /// underneath would only repeat it.
-    let caption: LocalizedStringResource?
+    let caption: MWLocalizedString?
     var tint: Color = .mwAccent
     var size: CGFloat = 232
 

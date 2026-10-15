@@ -43,11 +43,9 @@ struct DebugView: View {
                 .horizontalContainerCap(760)
                 .frame(maxWidth: .infinity)
             }
-            .scrollIndicators(.hidden)
         }
         .navigationTitle("Raw data")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar(.visible, for: .navigationBar)
         .navigationBarHidden(false)
         .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .always),
                     prompt: Text("Filter sensors and keys"))
@@ -248,7 +246,7 @@ struct DebugView: View {
         }
     }
 
-    private func dictionaryPanel(_ title: LocalizedStringResource, systemImage: String, dictionary: [String: Any]?) -> some View {
+    private func dictionaryPanel(_ title: MWLocalizedString, systemImage: String, dictionary: [String: Any]?) -> some View {
         Panel(title, systemImage: systemImage, trailing: dictionary.map { Text("\($0.count) keys") }) {
             if let dictionary, !dictionary.isEmpty {
                 LazyVStack(spacing: 0) {

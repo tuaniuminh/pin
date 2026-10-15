@@ -63,8 +63,7 @@ struct BatteryWidget: Widget {
         }
         .configurationDisplayName("Charge power")
         .description("Charge power and level, read from the phone's own sensors.")
-        .supportedFamilies([.systemSmall, .systemMedium,
-                            .accessoryCircular, .accessoryRectangular, .accessoryInline])
+        .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
 
@@ -91,9 +90,6 @@ struct BatteryWidgetView: View {
     private func content(_ palette: WidgetPalette) -> some View {
         switch family {
         case .systemMedium: MediumBatteryView(entry: entry, palette: palette)
-        case .accessoryCircular: CircularBatteryView(entry: entry)
-        case .accessoryRectangular: RectangularBatteryView(entry: entry)
-        case .accessoryInline: InlineBatteryView(entry: entry)
         default: SmallBatteryView(entry: entry, palette: palette)
         }
     }
@@ -314,89 +310,6 @@ struct NoReadingView: View {
                 .foregroundStyle(palette.muted)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-    }
-}
-
-// MARK: - Lock Screen
-
-struct CircularBatteryView: View {
-    let entry: BatteryEntry
-
-    var body: some View {
-        let reading = entry.reading
-        Gauge(value: Double(reading?.percent ?? 0), in: 0...100) {
-            Image(systemName: reading?.symbolName ?? "battery.0percent")
-        } currentValueLabel: {
-            // While plugged in the centre shows the power going in and the ring shows
-            // the level; on battery the centre is the level itself.
-            if let reading, reading.externalConnected, let watts = reading.watts {
-                Text(verbatim: "\(Int(watts.rounded()))W")
-            } else {
-                Text(verbatim: reading?.percent.map(String.init) ?? "—")
-            }
-        }
-        .gaugeStyle(.accessoryCircular)
-        .widgetAccentable()
-    }
-}
-
-struct RectangularBatteryView: View {
-    let entry: BatteryEntry
-
-    var body: some View {
-        if let reading = entry.reading {
-            VStack(alignment: .leading, spacing: 1) {
-                HStack(spacing: 4) {
-                    Image(systemName: reading.symbolName)
-                    Text(reading.statusTitle)
-                        .lineLimit(1)
-                }
-                .font(.headline)
-                .widgetAccentable()
-                if let watts = reading.watts, let source = reading.source {
-                    HStack(spacing: 4) {
-                        Text(verbatim: "\(Formatting.watts(watts)) W")
-                            .monospacedDigit()
-                        Text(source.caption)
-                    }
-                    .lineLimit(1)
-                }
-                HStack(spacing: 4) {
-                    Text(verbatim: reading.percentText)
-                        .monospacedDigit()
-                    FreshnessLabel(entry: entry)
-                }
-                .foregroundStyle(.secondary)
-                .lineLimit(1)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-        } else {
-            Text("No reading")
-        }
-    }
-}
-
-struct InlineBatteryView: View {
-    let entry: BatteryEntry
-
-    var body: some View {
-        if let reading = entry.reading {
-            if let watts = reading.watts {
-                Label {
-                    Text(verbatim: "\(Formatting.watts(watts)) W · \(reading.percentText)")
-                } icon: {
-                    Image(systemName: reading.symbolName)
-                }
-            } else {
-                Label {
-                    Text(verbatim: reading.percentText)
-                } icon: {
-                    Image(systemName: reading.symbolName)
-                }
-            }
-        } else {
-            Text("No reading")
-        }
     }
 }
 

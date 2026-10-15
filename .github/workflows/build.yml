@@ -13,7 +13,7 @@ name: Build
 # project file's MARKETING_VERSION is never edited.
 on:
   push:
-    branches: ["master"]
+    branches: ["master", "ios15"]
     tags: ["v*"]
   pull_request:
   workflow_dispatch:
