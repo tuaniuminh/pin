@@ -16,7 +16,7 @@ struct DevicesView: View {
 
     var body: some View {
         PageScaffold("Devices", glow: .mwWireless) {
-            thisPhonePanel
+            ThisPhonePanel()
             if groups.isEmpty {
                 accessoriesPlaceholder
             } else {
@@ -26,11 +26,15 @@ struct DevicesView: View {
             }
         }
     }
+}
 
-    private var thisPhonePanel: some View {
+struct ThisPhonePanel: View {
+    @EnvironmentObject private var monitor: PowerMonitor
+
+    var body: some View {
         let snapshot = monitor.snapshot
-        return Panel("This device", systemImage: "iphone",
-                     trailing: Text(verbatim: monitor.deviceModelIdentifier)) {
+        Panel("This device", systemImage: "iphone",
+              trailing: Text(verbatim: monitor.deviceModelIdentifier)) {
             VStack(spacing: 12) {
                 HStack(alignment: .center, spacing: 14) {
                     Image(systemName: "iphone.gen3")

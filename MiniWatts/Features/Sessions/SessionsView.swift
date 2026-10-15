@@ -32,8 +32,22 @@ struct SessionsView: View {
     @EnvironmentObject private var monitor: PowerMonitor
     @State private var confirmingDelete = false
 
+    private var groups: [DeviceGroup] {
+        let accessories = monitor.devices.filter { !$0.isInternal }
+        return Dictionary(grouping: accessories) { $0.groupName ?? $0.id }
+            .map { DeviceGroup(id: $0.key,
+                               entries: $0.value.sorted { $0.parts < $1.parts }) }
+            .sorted { $0.entries[0].name < $1.entries[0].name }
+    }
+
     var body: some View {
         PageScaffold("History", glow: .mwBattery, toolbar: AnyView(toolbar)) {
+            ThisPhonePanel()
+            if !groups.isEmpty {
+                ForEach(groups) { group in
+                    DeviceCard(group: group)
+                }
+            }
             if let session = monitor.currentSession {
                 currentPanel(session)
             }
@@ -171,7 +185,7 @@ struct SessionDetailView: View {
     var body: some View {
         ZStack {
             Backdrop(glow: .mwBattery)
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 LazyVStack(spacing: 14) {
                     energyPanel
                     powerPanel
@@ -181,16 +195,14 @@ struct SessionDetailView: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 24)
-                // Pinned to the container's width so nothing inside can widen the
-                // scroll content. A paragraph inside an HStack reports an enormous
-                // ideal width — the text unwrapped onto one line — and
-                // `.frame(maxWidth: .infinity)` only expands, it does not clamp, so
-                // that width propagates up and the page starts scrolling sideways.
                 .horizontalContainerCap(nil)
             }
+            .scrollIndicators(.hidden)
         }
         .navigationTitle(session.titleText)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.visible, for: .navigationBar)
+        .navigationBarHidden(false)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(role: .destructive) {

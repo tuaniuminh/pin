@@ -16,10 +16,10 @@ struct RootView: View {
                 .tabItem { Label("Thermal", systemImage: "thermometer.medium") }
             TabPage { AdapterView() }
                 .tabItem { Label("Adapter", systemImage: "powerplug.fill") }
-            TabPage { DevicesView() }
-                .tabItem { Label("Devices", systemImage: "square.stack.3d.up.fill") }
             TabPage { SessionsView() }
-                .tabItem { Label("History", systemImage: "chart.xyaxis.line") }
+                .tabItem { Label("History", systemImage: "clock.arrow.circlepath") }
+            TabPage { SettingsView() }
+                .tabItem { Label("Settings", systemImage: "gearshape.fill") }
         }
         .tint(.mwAccent)
         .background { ScreenAwakeHolder() }
@@ -157,38 +157,33 @@ struct PageScaffold<Content: View>: View {
         NavigationStack {
             ZStack {
                 PageBackdrop(glow: glow)
-                ScrollView {
-                    // Lazy, not a plain `VStack`. History puts up to sixty session
-                    // panels in here, each with its own sparkline, and an eager stack
-                    // builds and measures every one of them — while charging, once a
-                    // second, because the page reads the live session.
+                ScrollView(showsIndicators: false) {
                     LazyVStack(spacing: 14) {
+                        HStack(alignment: .center) {
+                            Text(title)
+                                .font(.system(size: 34, weight: .bold))
+                                .foregroundStyle(.primary)
+                            Spacer()
+                            if let toolbar {
+                                toolbar
+                            }
+                        }
+                        .padding(.horizontal, 4)
+                        .padding(.top, 12)
+                        .padding(.bottom, 2)
+
                         PageContent(content: content)
                     }
                     .padding(.horizontal, 16)
                     .padding(.top, 4)
                     .padding(.bottom, 24)
-                    // Pinned to the container's width so nothing inside can widen the
-                    // scroll content. A paragraph inside an HStack reports an enormous
-                    // ideal width — the text unwrapped onto one line — and
-                    // `.frame(maxWidth: .infinity)` only expands, it does not clamp, so
-                    // that width propagates up and the page starts scrolling sideways.
-                    //
-                    // Capped at 760 pt for an iPad, and the cap has to be part of this
-                    // same frame: the pin is a fixed width, so a `frame(maxWidth:)`
-                    // after it cannot narrow it — the content just overflows that frame
-                    // by the same amount on both sides and looks exactly as wide as before.
                     .horizontalContainerCap(760)
                     .frame(maxWidth: .infinity)
                 }
+                .scrollIndicators(.hidden)
             }
-            .navigationTitle(title)
-            .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                if let toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) { toolbar }
-                }
-            }
+            .toolbar(.hidden, for: .navigationBar)
+            .navigationBarHidden(true)
         }
     }
 }

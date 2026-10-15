@@ -2,13 +2,12 @@ import SwiftUI
 
 struct DashboardView: View {
     @EnvironmentObject private var monitor: PowerMonitor
-    @State private var showingSettings = false
 
     private var snapshot: PowerSnapshot { monitor.snapshot }
     private var plugged: Bool { snapshot.externalConnected }
 
     var body: some View {
-        PageScaffold("MiniWatts", glow: glowColor, toolbar: AnyView(toolbarButtons)) {
+        PageScaffold("MiniWatts", glow: glowColor) {
             heroPanel
             if monitor.thermal.state.isThrottling { throttleBanner }
             batteryPanel
@@ -17,18 +16,12 @@ struct DashboardView: View {
             sessionPanel
             if !monitor.sensorsAvailable { sensorNote }
         }
-        .sheet(isPresented: $showingSettings) { SettingsView() }
     }
 
     private var glowColor: Color {
         if monitor.thermal.state.isThrottling { return .mwDanger }
         if snapshot.isWirelessInput { return .mwWireless }
         return plugged ? .mwAccent : .mwLoss
-    }
-
-    private var toolbarButtons: some View {
-        Button { showingSettings = true } label: { Image(systemName: "gearshape") }
-            .tint(.mwAccent)
     }
 
     // MARK: Hero

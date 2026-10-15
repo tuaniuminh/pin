@@ -23,7 +23,7 @@ struct DebugView: View {
     var body: some View {
         ZStack {
             Backdrop(glow: .mwMuted, glowIntensity: 0.5)
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 LazyVStack(spacing: 14) {
                     performancePanel
                     diagnosticsPanel
@@ -40,18 +40,15 @@ struct DebugView: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 24)
-                // Pinned to the container's width so nothing inside can widen the
-                // scroll content. A paragraph inside an HStack reports an enormous
-                // ideal width — the text unwrapped onto one line — and
-                // `.frame(maxWidth: .infinity)` only expands, it does not clamp, so
-                // that width propagates up and the page starts scrolling sideways.
-                // The cap is part of the pin: see `PageScaffold`.
                 .horizontalContainerCap(760)
                 .frame(maxWidth: .infinity)
             }
+            .scrollIndicators(.hidden)
         }
         .navigationTitle("Raw data")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.visible, for: .navigationBar)
+        .navigationBarHidden(false)
         .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .always),
                     prompt: Text("Filter sensors and keys"))
         .autocorrectionDisabled()

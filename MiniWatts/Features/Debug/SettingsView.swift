@@ -3,69 +3,44 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject private var monitor: PowerMonitor
     @EnvironmentObject private var floatingMeter: FloatingMeterController
-    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Backdrop(glow: .mwAccent, glowIntensity: 0.6)
-                ScrollView {
-                    LazyVStack(spacing: 14) {
-                        recordingPanel(keepAwake: Binding(
-                            get: { monitor.keepScreenAwakeWhileCharging },
-                            set: { monitor.keepScreenAwakeWhileCharging = $0 }
-                        ))
-                        glancesPanel(liveActivity: Binding(
-                            get: { monitor.showsLiveActivityWhileCharging },
-                            set: { monitor.showsLiveActivityWhileCharging = $0 }
-                        ),
-                        metric: Binding(
-                            get: { monitor.liveActivityMetric },
-                            set: { monitor.liveActivityMetric = $0 }
-                        ))
-                        floatingPanel(showPower: Binding(
-                            get: { floatingMeter.showPower },
-                            set: { floatingMeter.showPower = $0 }
-                        ),
-                        showTemperatures: Binding(
-                            get: { floatingMeter.showTemperatures },
-                            set: { floatingMeter.showTemperatures = $0 }
-                        ),
-                        layout: Binding(
-                            get: { floatingMeter.layout },
-                            set: { floatingMeter.layout = $0 }
-                        ),
-                        temperatureSelection: Binding(
-                            get: { floatingMeter.temperatureSelection },
-                            set: { floatingMeter.temperatureSelection = $0 }
-                        ))
-                        capacityPanel(capacity: Binding(
-                            get: { monitor.configuredBatteryWattHours },
-                            set: { monitor.configuredBatteryWattHours = $0 }
-                        ))
-                        devicePanel
-                        aboutPanel
-                        rawDataLink
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.bottom, 24)
-                    // Pinned to the container's width so nothing inside can widen the
-                    // scroll content. A paragraph inside an HStack reports an enormous
-                    // ideal width — the text unwrapped onto one line — and
-                    // `.frame(maxWidth: .infinity)` only expands, it does not clamp, so
-                    // that width propagates up and the page starts scrolling sideways.
-                    // The cap is part of the pin: see `PageScaffold`.
-                    .horizontalContainerCap(760)
-                    .frame(maxWidth: .infinity)
-                }
-            }
-            .navigationTitle("Settings")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Done") { dismiss() }.tint(.mwAccent)
-                }
-            }
+        PageScaffold("Settings", glow: .mwAccent) {
+            recordingPanel(keepAwake: Binding(
+                get: { monitor.keepScreenAwakeWhileCharging },
+                set: { monitor.keepScreenAwakeWhileCharging = $0 }
+            ))
+            glancesPanel(liveActivity: Binding(
+                get: { monitor.showsLiveActivityWhileCharging },
+                set: { monitor.showsLiveActivityWhileCharging = $0 }
+            ),
+            metric: Binding(
+                get: { monitor.liveActivityMetric },
+                set: { monitor.liveActivityMetric = $0 }
+            ))
+            floatingPanel(showPower: Binding(
+                get: { floatingMeter.showPower },
+                set: { floatingMeter.showPower = $0 }
+            ),
+            showTemperatures: Binding(
+                get: { floatingMeter.showTemperatures },
+                set: { floatingMeter.showTemperatures = $0 }
+            ),
+            layout: Binding(
+                get: { floatingMeter.layout },
+                set: { floatingMeter.layout = $0 }
+            ),
+            temperatureSelection: Binding(
+                get: { floatingMeter.temperatureSelection },
+                set: { floatingMeter.temperatureSelection = $0 }
+            ))
+            capacityPanel(capacity: Binding(
+                get: { monitor.configuredBatteryWattHours },
+                set: { monitor.configuredBatteryWattHours = $0 }
+            ))
+            devicePanel
+            aboutPanel
+            rawDataLink
         }
     }
 
