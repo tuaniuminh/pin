@@ -57,19 +57,6 @@ struct WidgetPalette {
         default: return temperatureVeryHot
         }
     }
-
-    func tint(for state: ChargeActivityContentState) -> Color {
-        switch state.selectedMetric {
-        case .chargingPower:
-            return tint(for: state.reading)
-        case .socTemperature:
-            return temperatureTint(state.socTemperature)
-        case .batteryTemperature:
-            return temperatureTint(state.batteryTemperature)
-        case .hottestTemperature:
-            return temperatureTint(state.hottestTemperature)
-        }
-    }
 }
 
 extension Color {
