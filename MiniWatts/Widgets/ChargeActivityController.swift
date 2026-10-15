@@ -46,7 +46,17 @@ final class ChargeActivityController {
             end(with: state, dismissal: .after(state.date.addingTimeInterval(120)))
             return
         }
-        if let activity, activity.activityState == .active || activity.activityState == .stale {
+        var isActive = false
+        if #available(iOS 16.2, *) {
+            if let activity, activity.activityState == .active || activity.activityState == .stale {
+                isActive = true
+            }
+        } else {
+            if let activity, activity.activityState == .active {
+                isActive = true
+            }
+        }
+        if isActive, let activity {
             update(activity, with: state)
         } else if isForeground {
             start(with: state)
@@ -69,12 +79,20 @@ final class ChargeActivityController {
         guard state.date.timeIntervalSince(lastStartAttempt) >= Self.retryInterval,
               ActivityAuthorizationInfo().areActivitiesEnabled else { return }
         lastStartAttempt = state.date
+        let attributes = ChargeActivityAttributes(startedAt: state.date,
+                                                 startPercent: state.reading.percent)
         do {
-            activity = try Activity.request(
-                attributes: ChargeActivityAttributes(startedAt: state.date,
-                                                     startPercent: state.reading.percent),
-                content: content(for: state),
-                pushType: nil)
+            if #available(iOS 16.2, *) {
+                activity = try Activity.request(
+                    attributes: attributes,
+                    content: content(for: state),
+                    pushType: nil)
+            } else {
+                activity = try Activity.request(
+                    attributes: attributes,
+                    contentState: state,
+                    pushType: nil)
+            }
             lastSent = state
             lastSentAt = state.date
         } catch {
@@ -90,9 +108,9 @@ final class ChargeActivityController {
         if elapsed < Self.maximumInterval, let lastSent, !Self.differs(lastSent, state) { return }
         lastSent = state
         lastSentAt = state.date
-        let content = content(for: state)
         let id = activity.id
-        Task { await Self.update(id, content) }
+        let staleAfter = Self.staleAfter
+        Task { await Self.update(id, state: state, staleAfter: staleAfter) }
     }
 
     private func end(with state: ChargeActivityContentState,
@@ -101,9 +119,8 @@ final class ChargeActivityController {
         self.activity = nil
         lastSent = nil
         lastSentAt = .distantPast
-        let final = ActivityContent(state: state, staleDate: nil)
         let id = activity.id
-        Task { await Self.end(id, final, dismissal: dismissal) }
+        Task { await Self.end(id, state, dismissal: dismissal) }
     }
 
     // `Activity` is not `Sendable`, and its `update` and `end` are nonisolated async.
@@ -114,21 +131,36 @@ final class ChargeActivityController {
 
     @concurrent
     nonisolated private static func update(_ id: String,
-                                           _ content: ActivityContent<ChargeActivityContentState>) async {
-        await activity(id)?.update(content)
+                                           state: ChargeActivityContentState,
+                                           staleAfter: TimeInterval) async {
+        guard let act = activity(id) else { return }
+        if #available(iOS 16.2, *) {
+            let content = ActivityContent(state: state,
+                                          staleDate: state.date.addingTimeInterval(staleAfter))
+            await act.update(content)
+        } else {
+            await act.update(using: state)
+        }
     }
 
     @concurrent
     nonisolated private static func end(_ id: String,
-                                        _ content: ActivityContent<ChargeActivityContentState>?,
+                                        _ state: ChargeActivityContentState?,
                                         dismissal: ActivityUIDismissalPolicy) async {
-        await activity(id)?.end(content, dismissalPolicy: dismissal)
+        guard let act = activity(id) else { return }
+        if #available(iOS 16.2, *) {
+            let content = state.map { ActivityContent(state: $0, staleDate: nil) }
+            await act.end(content, dismissalPolicy: dismissal)
+        } else {
+            await act.end(using: state, dismissalPolicy: dismissal)
+        }
     }
 
     nonisolated private static func activity(_ id: String) -> Activity<ChargeActivityAttributes>? {
         Activity<ChargeActivityAttributes>.activities.first { $0.id == id }
     }
 
+    @available(iOS 16.2, *)
     private func content(
         for state: ChargeActivityContentState
     ) -> ActivityContent<ChargeActivityContentState> {
