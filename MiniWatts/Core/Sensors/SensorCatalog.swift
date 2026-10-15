@@ -47,7 +47,7 @@ nonisolated enum ThermalZone: String, CaseIterable, Identifiable {
         case .display: return "square.on.square"
         case .camera: return "camera"
         case .surface: return "iphone"
-        case .other: return "sensor"
+        case .other: return "cpu"
         }
     }
 

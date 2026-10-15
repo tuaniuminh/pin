@@ -58,8 +58,8 @@ extension ProcessInfo.ThermalState {
     var symbol: String {
         switch self {
         case .nominal: return "checkmark.circle"
-        case .fair: return "thermometer.medium"
-        case .serious: return "thermometer.high"
+        case .fair: return "thermometer"
+        case .serious: return "thermometer.sun.fill"
         case .critical: return "exclamationmark.triangle.fill"
         @unknown default: return "questionmark.circle"
         }

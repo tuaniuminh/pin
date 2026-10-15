@@ -89,7 +89,7 @@ struct DashboardView: View {
     private var throttleBanner: some View {
         Panel {
             HStack(alignment: .top, spacing: 10) {
-                Image(systemName: "thermometer.high")
+                Image(systemName: "thermometer.sun.fill")
                     .font(.system(size: 18, weight: .semibold))
                     .foregroundStyle(Color.mwDanger)
                 VStack(alignment: .leading, spacing: 3) {
@@ -246,7 +246,7 @@ struct DashboardView: View {
     }
 
     private var sensorNote: some View {
-        Panel("Sensors", systemImage: "sensor") {
+        Panel("Sensors", systemImage: "cpu") {
             EmptyNote(text: "No HID power sensors were found. On the simulator this is expected — IOKit reads the Mac's battery and the phone's PMU sensors do not exist. Run on the device for real numbers.",
                       systemImage: "exclamationmark.triangle")
         }

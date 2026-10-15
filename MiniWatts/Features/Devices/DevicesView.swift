@@ -44,7 +44,7 @@ struct ThisPhonePanel: View {
               trailing: Text(verbatim: monitor.deviceModelIdentifier)) {
             VStack(spacing: 12) {
                 HStack(alignment: .center, spacing: 14) {
-                    Image(systemName: "iphone.gen3")
+                    Image(systemName: "iphone")
                         .font(.system(size: 30, weight: .light))
                         .foregroundStyle(Color.mwAccent)
                     VStack(alignment: .leading, spacing: 2) {

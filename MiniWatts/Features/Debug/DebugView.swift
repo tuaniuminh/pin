@@ -114,7 +114,7 @@ struct DebugView: View {
     }
 
     private var sensorsPanel: some View {
-        Panel("Live sensors", systemImage: "sensor",
+        Panel("Live sensors", systemImage: "cpu",
               trailing: Text(verbatim: "\(monitor.snapshot.sensors.count)")) {
             if monitor.snapshot.sensors.isEmpty {
                 EmptyNote(text: "No sensors returned a finite value.")
@@ -131,7 +131,7 @@ struct DebugView: View {
     }
 
     private var temperatureWarningsPanel: some View {
-        Panel("Derived temperature filters", systemImage: "thermometer.variable.and.figure") {
+        Panel("Derived temperature filters", systemImage: "thermometer") {
             if monitor.snapshot.temperatureWarnings.isEmpty {
                 EmptyNote(text: "No temperature readings were excluded from derived values.")
             } else {

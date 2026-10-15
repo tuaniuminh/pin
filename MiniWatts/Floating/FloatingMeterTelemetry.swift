@@ -235,7 +235,7 @@ struct FloatingMeterTelemetryFrame: View {
 
     private var temperaturePage: some View {
         VStack(spacing: 12) {
-            Label("Component temperatures", systemImage: "thermometer.medium")
+            Label("Component temperatures", systemImage: "thermometer")
                 .font(.system(size: 19, weight: .semibold, design: .rounded))
                 .foregroundStyle(.orange)
             temperatureContent(compact: false)
@@ -253,13 +253,13 @@ struct FloatingMeterTelemetryFrame: View {
                              symbol: "cpu", compact: compact)
         case .battery:
             temperatureFocus("Battery", value: data?.batteryTemperature,
-                             symbol: "battery.75percent", compact: compact)
+                             symbol: "battery.100", compact: compact)
         case .charger:
             temperatureFocus("Charger", value: data?.chargerTemperature,
                              symbol: "powerplug.fill", compact: compact)
         case .hottest:
             temperatureFocus("Hottest", value: data?.hottestTemperature,
-                             symbol: "thermometer.high", detail: data?.hottestSensorName,
+                             symbol: "thermometer", detail: data?.hottestSensorName,
                              compact: compact)
         }
     }
@@ -272,11 +272,11 @@ struct FloatingMeterTelemetryFrame: View {
         let soc = temperatureCell("SoC", value: data?.socTemperature,
                                   symbol: "cpu", compact: compact)
         let battery = temperatureCell("Battery", value: data?.batteryTemperature,
-                                      symbol: "battery.75percent", compact: compact)
+                                      symbol: "battery.100", compact: compact)
         let charger = temperatureCell("Charger", value: data?.chargerTemperature,
                                       symbol: "powerplug.fill", compact: compact)
         let hottest = temperatureCell("Hottest", value: data?.hottestTemperature,
-                                      symbol: "thermometer.high", detail: data?.hottestSensorName,
+                                      symbol: "thermometer", detail: data?.hottestSensorName,
                                       compact: compact)
         if compact {
             VStack(spacing: 8) {
@@ -410,10 +410,10 @@ struct FloatingMeterTelemetryFrame: View {
     private var systemThermalSymbol: String {
         switch data?.systemThermalState {
         case .nominal: return "checkmark.circle.fill"
-        case .fair: return "thermometer.medium"
-        case .serious: return "thermometer.high"
+        case .fair: return "thermometer"
+        case .serious: return "thermometer.sun.fill"
         case .critical: return "exclamationmark.triangle.fill"
-        case nil: return "thermometer.medium"
+        case nil: return "thermometer"
         }
     }
 

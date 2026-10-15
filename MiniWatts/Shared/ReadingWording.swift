@@ -32,11 +32,9 @@ extension ChargeReading {
     var symbolName: String {
         if externalConnected { return isWireless ? "wave.3.right" : "bolt.fill" }
         switch percent ?? 100 {
-        case ..<13: return "battery.0percent"
-        case ..<38: return "battery.25percent"
-        case ..<63: return "battery.50percent"
-        case ..<88: return "battery.75percent"
-        default: return "battery.100percent"
+        case ..<13: return "battery.0"
+        case ..<50: return "battery.25"
+        default: return "battery.100"
         }
     }
 

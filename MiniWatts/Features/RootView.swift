@@ -13,7 +13,7 @@ struct RootView: View {
             TabPage { DashboardView() }
                 .tabItem { Label("Power", systemImage: "bolt.fill") }
             TabPage { ThermalView() }
-                .tabItem { Label("Thermal", systemImage: "thermometer.medium") }
+                .tabItem { Label("Thermal", systemImage: "thermometer") }
             TabPage { AdapterView() }
                 .tabItem { Label("Adapter", systemImage: "powerplug.fill") }
             TabPage { SessionsView() }

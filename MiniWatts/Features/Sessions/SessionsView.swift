@@ -54,7 +54,7 @@ struct SessionsView: View {
             if monitor.sessions.isEmpty {
                 Panel("No finished charges yet", systemImage: "clock.arrow.circlepath") {
                     EmptyNote(text: "A session starts when you plug in and is saved when you unplug. Energy is integrated from the live sensors, so keep Wattcheck in the foreground for the totals to cover the whole charge.",
-                              systemImage: "bolt.badge.clock")
+                              systemImage: "clock")
                 }
             } else {
                 summaryPanel
@@ -166,7 +166,7 @@ struct SessionRow: View {
                     }
                     if session.throttledFraction > 0.05 {
                         Pill(text: Text("\(String(format: "%.0f%%", session.throttledFraction * 100)) hot"),
-                             systemImage: "thermometer.high", tint: .mwDanger)
+                             systemImage: "thermometer", tint: .mwDanger)
                     }
                     if session.isWireless {
                         Pill(text: Text("MagSafe"), systemImage: "wave.3.right", tint: .mwWireless)
@@ -271,7 +271,7 @@ struct SessionDetailView: View {
     }
 
     private var climatePanel: some View {
-        Panel("Level and temperature", systemImage: "thermometer.variable") {
+        Panel("Level and temperature", systemImage: "thermometer") {
             if session.samples.isEmpty {
                 EmptyNote(text: "No samples recorded.")
             } else {
@@ -297,7 +297,7 @@ struct SessionDetailView: View {
     private var cablePanel: some View {
         let fits = monitor.pathFitsSharingAdapter(with: session)
         if !fits.isEmpty {
-            Panel("Cable comparison", systemImage: "cable.connector.horizontal",
+            Panel("Cable comparison", systemImage: "cable.connector",
                   trailing: Text("\(fits.count) sessions")) {
                 VStack(alignment: .leading, spacing: 8) {
                     ForEach(fits) { fit in

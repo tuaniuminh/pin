@@ -22,7 +22,7 @@ struct ThermalView: View {
         PageScaffold("Thermal", glow: glowColor) {
             statePanel
             if snapshot.temperatures.isEmpty {
-                Panel("Sensors", systemImage: "sensor") {
+                Panel("Sensors", systemImage: "cpu") {
                     EmptyNote(text: snapshot.temperatureWarnings.isEmpty
                               ? "No temperature sensors were found. The simulator has none; on a device they appear as soon as the app has read the HID service list."
                               : "Temperature sensors answered, but every value was excluded from derived readings. See the filter details below.",
@@ -127,7 +127,7 @@ struct ThermalView: View {
     // MARK: Map
 
     private var mapPanel: some View {
-        Panel("Heat map · schematic", systemImage: "iphone.gen3",
+        Panel("Heat map · schematic", systemImage: "iphone",
               trailing: Text("\(snapshot.temperatures.count) sensors")) {
             VStack(spacing: 12) {
                 PhoneHeatMap(readings: zoneReadings)
