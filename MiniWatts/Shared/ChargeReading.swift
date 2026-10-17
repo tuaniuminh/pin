@@ -28,9 +28,29 @@ nonisolated struct ChargeReading: Codable, Hashable, Sendable {
     var isOnHold: Bool
     var isFull: Bool
     var isWireless: Bool
+    var isFastCharging: Bool
     var watts: Double?
     var source: Source?
     var batteryTemperature: Double?
+
+    enum CodingKeys: String, CodingKey {
+        case date, percent, externalConnected, isCharging, isOnHold, isFull, isWireless, isFastCharging, watts, source, batteryTemperature
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        date = try container.decode(Date.self, forKey: .date)
+        percent = try container.decodeIfPresent(Int.self, forKey: .percent)
+        externalConnected = try container.decode(Bool.self, forKey: .externalConnected)
+        isCharging = try container.decode(Bool.self, forKey: .isCharging)
+        isOnHold = try container.decodeIfPresent(Bool.self, forKey: .isOnHold) ?? false
+        isFull = try container.decodeIfPresent(Bool.self, forKey: .isFull) ?? false
+        isWireless = try container.decodeIfPresent(Bool.self, forKey: .isWireless) ?? false
+        isFastCharging = try container.decodeIfPresent(Bool.self, forKey: .isFastCharging) ?? false
+        watts = try container.decodeIfPresent(Double.self, forKey: .watts)
+        source = try container.decodeIfPresent(Source.self, forKey: .source)
+        batteryTemperature = try container.decodeIfPresent(Double.self, forKey: .batteryTemperature)
+    }
 
     init(date: Date,
          percent: Int?,
@@ -39,6 +59,7 @@ nonisolated struct ChargeReading: Codable, Hashable, Sendable {
          isOnHold: Bool = false,
          isFull: Bool = false,
          isWireless: Bool = false,
+         isFastCharging: Bool = false,
          watts: Double?,
          source: Source?,
          batteryTemperature: Double? = nil) {
@@ -49,6 +70,7 @@ nonisolated struct ChargeReading: Codable, Hashable, Sendable {
         self.isOnHold = isOnHold
         self.isFull = isFull
         self.isWireless = isWireless
+        self.isFastCharging = isFastCharging
         self.watts = watts
         self.source = source
         self.batteryTemperature = batteryTemperature
@@ -65,6 +87,7 @@ nonisolated struct ChargeReading: Codable, Hashable, Sendable {
         isOnHold = snapshot.isChargingOnHold
         isFull = snapshot.fullyCharged && snapshot.externalConnected
         isWireless = snapshot.isWirelessInput || snapshot.adapterIsWireless
+        isFastCharging = snapshot.isFastCharging
         batteryTemperature = snapshot.batteryTemperature
 
         if snapshot.externalConnected {

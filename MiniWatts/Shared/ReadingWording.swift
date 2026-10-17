@@ -24,7 +24,10 @@ extension ChargeReading {
     var statusTitle: LocalizedStringResource {
         if isOnHold { return "Charging on hold" }
         if isFull { return "Full" }
-        if isCharging { return "Charging" }
+        if isCharging {
+            if isFastCharging { return "Fast Charging" }
+            return "Charging"
+        }
         if externalConnected { return "Plugged in, not charging" }
         return "On battery"
     }

@@ -40,6 +40,11 @@ struct DashboardView: View {
                     Pill(text: Text(snapshot.statusText),
                          systemImage: plugged ? "bolt.fill" : "battery.50",
                          tint: plugged ? .mwAccent : .mwMuted)
+                    if snapshot.isFastCharging {
+                        Pill(text: Text("Fast Charging"),
+                             systemImage: "bolt.badge.automatic",
+                             tint: .orange)
+                    }
                     if snapshot.isWirelessInput {
                         Pill(text: Text("MagSafe"), systemImage: "wave.3.right", tint: .mwWireless)
                     }

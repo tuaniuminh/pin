@@ -323,6 +323,34 @@ nonisolated struct PowerSnapshot: @unchecked Sendable {
         return "On battery"
     }
 
+    /// True when the device is receiving fast charging (USB-PD high voltage >= 8.5V,
+    /// negotiated PD profile > 5.5V, or measured charging power >= 14.5W).
+    var isFastCharging: Bool {
+        guard externalConnected, isCharging else { return false }
+        if let v = usbInputVoltage, v >= 8.5 { return true }
+        if let v = adapterVoltageMillivolts, v >= 8500 { return true }
+        if let p = negotiatedProfile, p.volts > 5.5 { return true }
+        if let w = inputWatts, w >= 14.5 { return true }
+        if let bw = batteryWatts, bw >= 12.0 { return true }
+        return false
+    }
+
+    var fastChargingDescription: String {
+        if isWirelessInput {
+            return "MagSafe / Qi2"
+        }
+        if let profile = negotiatedProfile {
+            return "USB-PD (\(profile.label))"
+        }
+        if let v = usbInputVoltage, v >= 8.5 {
+            return "USB-PD (\(String(format: "%.1f V", v)))"
+        }
+        if let w = inputWatts {
+            return "\(String(format: "%.1f W", w))"
+        }
+        return "USB-PD"
+    }
+
     /// Minutes to full while charging, to empty otherwise.
     var timeRemainingMinutes: Int? {
         if let value = int("TimeRemaining", in: registry), value > 0, value != 65535 { return value }

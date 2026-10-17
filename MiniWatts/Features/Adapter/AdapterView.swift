@@ -114,6 +114,9 @@ struct AdapterView: View {
                 DetailRow(label: "Source", value: snapshot.adapterSource)
                 DetailRow(label: "Power tier", value: snapshot.adapterPowerTier.map(String.init))
                 DetailRow(label: "Negotiated max", value: snapshot.negotiatedProfile?.label)
+                if snapshot.isFastCharging {
+                    DetailRow(label: "Fast charging", value: snapshot.fastChargingDescription)
+                }
                 DetailRow(label: "Transport", value: DetailRow.transportName(wireless: snapshot.adapterIsWireless))
             }
         }

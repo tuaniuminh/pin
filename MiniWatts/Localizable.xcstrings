@@ -4584,6 +4584,38 @@
           }
         }
       }
+    },
+    "Fast Charging": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "快充"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sạc nhanh"
+          }
+        }
+      }
+    },
+    "Fast charging": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "快充"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sạc nhanh"
+          }
+        }
+      }
     }
   },
   "version": "1.0"
